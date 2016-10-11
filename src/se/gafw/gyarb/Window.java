@@ -11,6 +11,8 @@ public class Window {
     
     public Window(String title, int width, int height, Canvas canvas,  boolean visible) {
         frame = new JFrame(title);
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
         frame.setPreferredSize(dim = new Dimension(width, height));
         frame.setMaximumSize(dim = new Dimension(width, height));
         frame.setMinimumSize(dim = new Dimension(width, height));
