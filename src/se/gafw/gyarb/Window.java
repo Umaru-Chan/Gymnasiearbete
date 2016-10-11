@@ -1,4 +1,4 @@
-package se.gafw.gyarb;
+package se.gafw.graphics;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
