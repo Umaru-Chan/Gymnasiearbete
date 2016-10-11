@@ -8,10 +8,8 @@ public class Window {
     
     private JFrame frame;
     private Dimension dim;
-    private String title;
     
     public Window(String title, int width, int height, Canvas canvas,  boolean visible) {
-        this.title = title;
         frame = new JFrame(title);
         frame.setPreferredSize(dim = new Dimension(width, height));
         frame.setMaximumSize(dim = new Dimension(width, height));
