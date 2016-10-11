@@ -1,5 +1,6 @@
 package se.gafw.gyarb;
 
+import java.awt.Canvas;
 import java.awt.Dimension;
 import javax.swing.JFrame;
 
@@ -9,13 +10,14 @@ public class Window {
     private Dimension dim;
     private String title;
     
-    public Window(String title, int width, int height, boolean visible) {
+    public Window(String title, int width, int height, Canvas canvas,  boolean visible) {
         this.title = title;
         frame = new JFrame(title);
         frame.setPreferredSize(dim = new Dimension(width, height));
         frame.setMaximumSize(dim = new Dimension(width, height));
         frame.setMinimumSize(dim = new Dimension(width, height));
         frame.setLocationRelativeTo(null);
+        frame.add(canvas);
         frame.setVisible(visible);
     }
     
