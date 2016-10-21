@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
+import java.util.Random;
 
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
@@ -12,7 +13,8 @@ import se.gafw.graphics.SpriteSheet;
 import se.gafw.graphics.Window;
 
 public class Gyarb extends Canvas {
-
+	public static final long serialVersionUID = 1L;
+	
 	public static final int WIDTH = 600, HEIGHT = WIDTH / 16 * 9, SCALE = 2;
 	public static final short VERSION_MAJOR = 0, VERSION_MINOR = 1;
 	public static final String TITLE = "gyarb " + VERSION_MAJOR + "." + VERSION_MINOR;
@@ -23,7 +25,10 @@ public class Gyarb extends Canvas {
 
 	private BufferedImage image;
 	private int[] pixels;
-
+	
+	/**
+	 * 
+	 */
 	public Gyarb() {
 		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
 		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
@@ -33,6 +38,9 @@ public class Gyarb extends Canvas {
 		run();
 	}
 
+	/**
+	 * The main gameloop, makes sure to tick 60 times per second (TODO remove and replace with deltatime) and render the game.
+	 */
 	public void run() {
 		int frames = 0, updates = 0;
 		double delta = 0.0D, ns = 1e9 / 60.0D;
@@ -45,6 +53,7 @@ public class Gyarb extends Canvas {
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			while (delta >= 1) {
+				//TODO uppdatera med deltatid
 				update();
 				updates++;
 				delta--;
@@ -62,7 +71,10 @@ public class Gyarb extends Canvas {
 			}
 		}
 	}
-
+		
+	/**
+	 * render everything here
+	 */
 	private void render() {
 		BufferStrategy buffer = getBufferStrategy();
 		Graphics g = buffer.getDrawGraphics();
@@ -79,12 +91,16 @@ public class Gyarb extends Canvas {
 		buffer.show();
 	}
 
+	/**
+	 * updates all the movement and animations in the game.
+	 * TODO deltaTime ???
+	 */
 	private void update() {
 
 	}
 
 	public static void main(String[] args) {
+		//TODO läsa config?? (kanske på en ny tråd??) kanske rendera upp ngn loga medans spelet laddas??
 		new Gyarb();
 	}
-
 }
