@@ -29,4 +29,3 @@ public class NPC extends Entity {
 		screen.renderSprite(sprite, (int)x, (int)y, false);
 	}
 }
-
