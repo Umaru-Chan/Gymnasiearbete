@@ -5,41 +5,57 @@ import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
-import java.util.Random;
+import java.io.IOException;
 
 import se.gafw.graphics.Screen;
-import se.gafw.graphics.Sprite;
-import se.gafw.graphics.SpriteSheet;
 import se.gafw.graphics.Window;
+import se.gafw.util.KeyInput;
+import se.gafw.util.MouseInput;
 
 public class Gyarb extends Canvas {
 	public static final long serialVersionUID = 1L;
 	
-	public static final int WIDTH = 600, HEIGHT = WIDTH / 16 * 9, SCALE = 2;
+	public static final int WIDTH = 400, HEIGHT = WIDTH / 16 * 9, SCALE = 3;
 	public static final short VERSION_MAJOR = 0, VERSION_MINOR = 1;
 	public static final String TITLE = "gyarb " + VERSION_MAJOR + "." + VERSION_MINOR;
 
 	private boolean running;
-	private Window window;
-	private Screen screen;
+	private final Window window;
+	private final Screen screen;
+	private final KeyInput key;
+	private final MouseInput mouse;
 
-	private BufferedImage image;
-	private int[] pixels;
+	private final BufferedImage image;
+	private final int[] pixels;
 	
 	/**
 	 * 
 	 */
 	public Gyarb() {
 		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
-		image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-		pixels = ((DataBufferInt) image.getRaster().getDataBuffer()).getData();
+		pixels = ((DataBufferInt) 
+				(image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB)).getRaster().getDataBuffer()).getData();
 		screen = new Screen(WIDTH, HEIGHT, 0x8888ff);
+		addKeyListener(key = new KeyInput());
+		addMouseListener(mouse = new MouseInput());
+		addMouseMotionListener(mouse);
 		running = true;
 		run();
 	}
+	
+	public void 日本にいきたい(){}
+	public void おはようございます(){}
+	public void おっぱい(){}
+	public void ヘッロ(){}
+	
+	protected synchronized static final void なんさいですか() throws Exception, IOException, InterruptedException{}
+	
+	public void weeb(){}
+	
 
 	/**
-	 * The main gameloop, makes sure to tick 60 times per second (TODO remove and replace with deltatime) and render the game.
+	 * hovodloopen (antar att man kan skriva det?) TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
+	 * 日本語はわかりますか?
 	 */
 	public void run() {
 		int frames = 0, updates = 0;
@@ -60,10 +76,9 @@ public class Gyarb extends Canvas {
 			}
 			render();
 			frames++;
-			try {
+			try{
 				Thread.sleep(1);
-			} catch (InterruptedException e) {
-			}
+			}catch(InterruptedException e){}
 			if (System.currentTimeMillis() - timer >= 1e3) {
 				window.setTitle(TITLE + " fps: " + frames + " ups: " + updates);
 				updates = frames = 0;
@@ -73,7 +88,7 @@ public class Gyarb extends Canvas {
 	}
 		
 	/**
-	 * render everything here
+	 * rendera allt här, render metoden kommer att kallas så många gånger per sekund som datorn kan
 	 */
 	private void render() {
 		BufferStrategy buffer = getBufferStrategy();
@@ -81,6 +96,7 @@ public class Gyarb extends Canvas {
 		screen.clear();
 
 		// TODO rendera saker här
+		
 
 		// sluta rendera här
 
@@ -92,15 +108,15 @@ public class Gyarb extends Canvas {
 	}
 
 	/**
-	 * updates all the movement and animations in the game.
+	 * uppdatera all rörelse och logik i spelet (update kommer alltid att kallas 60ggr per sekund oberoende av system)
 	 * TODO deltaTime ???
 	 */
 	private void update() {
-
+		
 	}
 
 	public static void main(String[] args) {
-		//TODO läsa config?? (kanske på en ny tråd??) kanske rendera upp ngn loga medans spelet laddas??
+		//TODO läsa config?? kanske rendera upp ngn loga medans spelet laddas??
 		new Gyarb();
 	}
 }
