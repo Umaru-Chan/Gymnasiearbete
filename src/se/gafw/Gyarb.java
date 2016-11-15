@@ -9,10 +9,11 @@ import java.io.IOException;
 
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Window;
+import se.gafw.level.Level;
 import se.gafw.util.KeyInput;
 import se.gafw.util.MouseInput;
 
-public class Gyarb extends Canvas {
+public class Gyarb extends Canvas implements Runnable{
 	public static final long serialVersionUID = 1L;
 	
 	public static final int WIDTH = 400, HEIGHT = WIDTH / 16 * 9, SCALE = 3;
@@ -20,10 +21,13 @@ public class Gyarb extends Canvas {
 	public static final String TITLE = "gyarb " + VERSION_MAJOR + "." + VERSION_MINOR;
 
 	private boolean running;
+	private Thread thread;
+	
 	private final Window window;
 	private final Screen screen;
 	private final KeyInput key;
 	private final MouseInput mouse;
+	private Level currentLevel;
 
 	private final BufferedImage image;
 	private final int[] pixels;
@@ -32,29 +36,34 @@ public class Gyarb extends Canvas {
 	 * 
 	 */
 	public Gyarb() {
-		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
 		pixels = ((DataBufferInt) 
 				(image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB)).getRaster().getDataBuffer()).getData();
 		screen = new Screen(WIDTH, HEIGHT, 0x8888ff);
 		addKeyListener(key = new KeyInput());
 		addMouseListener(mouse = new MouseInput());
 		addMouseMotionListener(mouse);
+		currentLevel = Level.TEST;
 		running = true;
-		run();
+		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
 	}
 	
-	public void 日本にいきたい(){}
-	public void おはようございます(){}
-	public void おっぱい(){}
-	public void ヘッロ(){}
+	public synchronized void start(){
+		thread = new Thread(this, "mainThread");
+		running = true;
+		thread.start();
+	}
 	
-	protected synchronized static final void なんさいですか() throws Exception, IOException, InterruptedException{}
-	
-	public void weeb(){}
-	
+	public synchronized void stop(){
+		try{
+			thread.join();
+			running = false;
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+	}
 
 	/**
-	 * hovodloopen (antar att man kan skriva det?) TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
+	 * huvodloopen (antar att man kan skriva det?) TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
 	 * 日本語はわかりますか?
 	 */
 	public void run() {
@@ -85,6 +94,7 @@ public class Gyarb extends Canvas {
 				timer += 1e3;
 			}
 		}
+		stop();
 	}
 		
 	/**
@@ -113,6 +123,10 @@ public class Gyarb extends Canvas {
 	 */
 	private void update() {
 		
+	}
+	
+	public Level getCurrentLevel(){
+		return currentLevel;
 	}
 
 	public static void main(String[] args) {
