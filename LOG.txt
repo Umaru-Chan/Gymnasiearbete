@@ -1,6 +1,6 @@
 V.47
 
-[ ] Alexander :
+[v.48 tisdag] Alexander : Slumpmässigt genererade nivåer.
 
 [v.48 tisdag] Mathias : Inventory
 
