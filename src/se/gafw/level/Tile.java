@@ -5,6 +5,10 @@ import se.gafw.graphics.Sprite;
 
 public abstract class Tile {
 	
+	public static final Tile VOID_TILE = new CollidableTile(Sprite.VOID);
+	public static final int VOID_COLOR = 0xffffffff;
+	
+	
 	private final Sprite sprite;
 	
 	/**
@@ -20,7 +24,7 @@ public abstract class Tile {
 	 */
 	public void render(Screen screen, int x, int y)
 	{
-		screen.renderSprite(sprite, x, y, false);
+		screen.renderSprite(sprite, x << 4, y << 4, false);
 	}
 	/**
 	 * @return true if the tile is solid, else return false.

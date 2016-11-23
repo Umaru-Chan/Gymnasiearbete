@@ -2,6 +2,8 @@ package se.gafw.graphics;
 
 public class Sprite {
 	
+	public static final Sprite VOID = new Sprite(SpriteSheet.TILES, 0, 0, 16);
+	
 	public int[] pixels;
 	public int width, height;
 	

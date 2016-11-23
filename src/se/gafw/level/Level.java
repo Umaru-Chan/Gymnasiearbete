@@ -42,8 +42,10 @@ public class Level {
 	}
 	
 	public void render(Screen screen, int xOffs, int yOffs) {
-		int x0 = xOffs >> 4, x1 = x0 + 16;
-		int y0 = yOffs >> 4, y1 = y0 + 16;
+		int x0 = xOffs >> 4;// >> 4 = / 16
+		int x1 = (xOffs + screen.width + 16) >> 4;
+		int y0 = yOffs >> 4;
+		int y1 = (yOffs + screen.height + 16) >> 4;
 		//TODO matte
 		//if(xp < 0 || xp >= width)
 		

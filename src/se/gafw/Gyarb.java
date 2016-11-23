@@ -106,7 +106,7 @@ public class Gyarb extends Canvas implements Runnable{
 		screen.clear();
 
 		// TODO rendera saker här
-		
+		currentLevel.render(screen, 0, 0);
 
 		// sluta rendera här
 

@@ -31,6 +31,6 @@ public abstract class Entity {
 		return false;
 	}
 	
-	public abstract void tick();
+	public abstract void update();
 	public abstract void render(Screen screen);
 }

@@ -3,7 +3,8 @@ package se.gafw.graphics;
 public class Screen {
 	
 	public int[] pixels;
-	private final int clearColor, width, height;
+	private final int clearColor;
+	public final int width, height;
 	
 	/**
 	 * used to render to the screen

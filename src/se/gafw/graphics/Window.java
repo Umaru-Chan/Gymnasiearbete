@@ -1,59 +1,66 @@
 package se.gafw.graphics;
 
-import java.awt.Canvas;
 import java.awt.Dimension;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+
+import se.gafw.Gyarb;
+import se.gafw.util.FileHandler;
 
 public class Window {
     
     private JFrame frame;
     private Dimension dim;
+    private Gyarb mainGame;
     
-    /**
-     * Constructor. Creates a window
-     * 
-     * @param title The windows title
-     * @param width The windows width
-     * @param height The windows height
-     * @param canvas The game draws everything on the canvas 
-     * @param visible If the window is visible or not
-     */
-    public Window(String title, int width, int height, Canvas canvas, boolean visible) {
+    public Window(String title, int width, int height, Gyarb gyarb, boolean visible) {
+    	mainGame = gyarb;
         frame = new JFrame(title);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowAdapter(){
+        	@Override
+        	public void windowClosing(WindowEvent e){
+        		new Thread(() -> {        			
+        			//TODO kollar varför det e så segt :(
+        			int option = JOptionPane.showConfirmDialog(frame, "are you sure that you want to exit?", "confirmation", JOptionPane.YES_NO_OPTION);
+        			if(option == JOptionPane.YES_OPTION)return;
+        			//om man vill stänga
+        			option = JOptionPane.showConfirmDialog(frame, "Save?", "exiting", JOptionPane.YES_NO_OPTION);
+        			if(option == JOptionPane.YES_OPTION)save();
+        			//stäng applikationen
+        			//mainGame.stop();
+        			System.gc();
+        			System.exit(0);
+        		}).start();
+        	}
+        });
         frame.setResizable(false);
         frame.setPreferredSize(dim = new Dimension(width, height));
         frame.setMaximumSize(dim = new Dimension(width, height));
         frame.setMinimumSize(dim = new Dimension(width, height));
         frame.setLocationRelativeTo(null);
-        frame.add(canvas);
+        frame.add(gyarb);
         frame.setVisible(visible);
+        gyarb.start();
     }
     
-    /**
-     * Decides if the window is visible or not.
-     * 
-     * @param visible
-     */
+    
+    private void save(){
+    	FileHandler handler = new FileHandler("res/saves/", "save", "ser");
+    	handler.writeObject(mainGame.getCurrentLevel());
+    }
+    
     public void setVisible(boolean visible) {
         frame.setVisible(visible);
     }
     
-    /**
-     * Returns the dimension of the window
-     * 
-     * @return
-     */
     public Dimension getDimension() {
         return dim;
     }
     
-    /**
-     * Changes the title of the game
-     * 
-     * @param title 
-     */
     public void setTitle(String title) {
         frame.setTitle(title);
     }
