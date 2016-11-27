@@ -18,10 +18,11 @@ public class Player extends Entity{
         this.in = in;
     }
 
+    //bara temporär kod för att testa kollision
     public void update() {
         if(dy < 0)dy = 0;
         if(dy > 0)dy-=.2;
-        move(0, 1 - dy); //ramla alltid ned�t
+        move(0, 1 - dy); //ramla alltid nedåt
         if(in.getKeyStatus(KeyEvent.VK_A))move(-1,  0);
         if(in.getKeyStatus(KeyEvent.VK_D))move( 1,  0);
         if(in.getKeyStatus(KeyEvent.VK_SPACE) && dy == 0)dy = 6;
