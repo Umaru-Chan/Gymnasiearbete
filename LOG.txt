@@ -4,4 +4,4 @@ V.47
 
 [v.48 tisdag ( )] Mathias : Inventory
 
-[v.48 tisdag ( )] Hampus :
+[v.48 tisdag ( )] Hampus : Förstå koden, inventory-bild, Rita grunden för spelarens "spritesheet animation" 
