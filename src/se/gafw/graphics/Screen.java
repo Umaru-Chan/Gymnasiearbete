@@ -1,10 +1,13 @@
 package se.gafw.graphics;
 
+import se.gafw.level.Tile;
+
 public class Screen {
 	
 	public int[] pixels;
 	private final int clearColor;
 	public final int width, height;
+	private int xScroll, yScroll;
 	
 	/**
 	 * used to render to the screen
@@ -46,5 +49,27 @@ public class Screen {
 				pixels[up + vp * width] = sprite.pixels[u + v * sprite.width];
 			}
 		}	
+	}
+	
+	public void renderTile(Tile tile, int xp, int yp)
+	{
+		xp -= xScroll;
+		yp -= yScroll;
+		for (int y = 0; y < tile.sprite.height; y++) {
+			int ya = y + yp;
+			for (int x = 0; x < tile.sprite.width; x++) {
+				int xa = x + xp;
+				if (xa < -tile.sprite.width || xa >= width || ya < 0 || ya >= height)
+					break;
+				if (xa < 0)
+					xa = 0;
+				pixels[xa + ya * width] = tile.sprite.pixels[x + y * tile.sprite.width];
+			}
+		}
+	}
+	
+	public void setScroll(int x, int y){
+		xScroll = x;
+		yScroll = y;
 	}
 }
