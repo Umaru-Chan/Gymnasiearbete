@@ -8,14 +8,13 @@ public class NPC extends Entity {
 
 	private float health;
 	private float speed;
-	
-	public NPC(Level level, float x, float y, Sprite sprite, float health, float speed) {
+		public NPC(Level level, float x, float y, Sprite sprite, float health, float speed) {
 		super(level, x, y, sprite);
 		this.health = health;
 		this.speed = speed;
 	}
 	
-	public void tick() {
+	public void update() {
 		//TODO röra på skiten??
 	}
 	

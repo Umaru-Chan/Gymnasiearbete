@@ -26,7 +26,13 @@ public class Window {
         		new Thread(() -> {        			
         			//TODO kollar varför det e så segt :(
         			int option = JOptionPane.showConfirmDialog(frame, "are you sure that you want to exit?", "confirmation", JOptionPane.YES_NO_OPTION);
-        			if(option == JOptionPane.YES_OPTION)return;
+        			if(option == JOptionPane.YES_OPTION)
+                    {
+                        frame.dispose();
+                        frame = null;
+                        System.gc();
+                        System.exit(0);
+                    }
         			//om man vill stänga
         			option = JOptionPane.showConfirmDialog(frame, "Save?", "exiting", JOptionPane.YES_NO_OPTION);
         			if(option == JOptionPane.YES_OPTION)save();
@@ -64,5 +70,7 @@ public class Window {
     public void setTitle(String title) {
         frame.setTitle(title);
     }
+
+    public synchronized boolean shouldClose() {return frame == null;}
     
 }

@@ -1,8 +1,10 @@
 package se.gafw.gameObjects;
 
+import se.gafw.Gyarb;
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
 import se.gafw.level.Level;
+import se.gafw.level.Tile;
 
 public abstract class Entity {
 
@@ -20,15 +22,35 @@ public abstract class Entity {
 	}
 	
 	protected void move(float dx, float dy){
-		if(!collision(x+dx, y+dy)){
+		if(!collision((int)(dx), (int)(dy))){
 			x += dx;
 			y += dy;
 		}
 	}
-	
-	protected boolean collision(float x, float y){
-		//TODO kolla om x,y | x+width,y | x,y+height | x+width,y+height kolliderar med en Tile
-		return false;
+
+	/**
+	 * just nu så räknar man på alla 4 hörn
+	 * TODO göra "ett till hörn" i mitten av alla kanter och räkna på dom också så att spelaren som är dubbelt så bred
+	 * TODO som blocken inte faller igenom blocken som är i mitten
+	 * @param xa
+	 * @param ya
+	 * @return
+	 */
+	private boolean collision(int xa, int ya){
+		boolean solid = false;
+		int rx = (int)x + Gyarb.WIDTH / 2 - sprite.width / 2;
+		int ry = (int)y + Gyarb.HEIGHT / 2 - sprite.height / 2;
+		for(int i = 0; i < 4; i++){
+			int xt = ((int)(rx+xa) - i % 2 * 31 + 31) >> 4;
+			int yt = ((int)(ry+ya) + i / 2 * 31) >> 4;
+			if(level.getTile(xt,yt).solid())solid = true;
+			//if(level.getTile(xt,yt).liquid())solid = true;
+		}
+
+		//if(level.getTile(((int)(rx+xa) + 16) >> 4, ((int)(ry+ya) + 32)).solid())solid = true;
+
+
+		return solid;
 	}
 	
 	public abstract void update();

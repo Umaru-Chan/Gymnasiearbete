@@ -32,7 +32,41 @@ public class Level {
 			e.printStackTrace();
 		}
 	}
-	
+
+    private Level(int[] tileColors, int width, int height)
+    {
+        this.tileColors = tileColors;
+        this.width = width;
+        this.height = height;
+    }
+
+	public static Level randomLevel(int amplitude, int width, int depth)
+    {
+        Random random = new Random();
+        Level result;
+        int[] h = new int[width];
+        int[] tileColors = new int[width * depth];
+        for(int i = 0; i < width; i++)
+        {
+            h[i] = depth + random.nextInt(amplitude);
+        }
+
+        for(int x = 0; x < width; x++)
+        {
+            for(int y = 0; y < depth; y++)
+            {
+                if(y + depth >= h[x])
+                {
+                    System.out.println("lmao");
+                    tileColors[x + y * width] = Tile.TEST_COLOR;
+                }
+                else tileColors[x + y * width] = Tile.VOID_COLOR;
+            }
+        }
+
+        return result = new Level(tileColors, width, depth);
+    }
+
 	/**
 	 * Generera en slumpmässig uppsättning tiles.
 	 * @param random
@@ -78,8 +112,8 @@ public class Level {
 		//rendera allt över alla tiles
 		renderEntities(screen);
 	}
-	
-	private Tile getTile(int x, int y){
+
+	public Tile getTile(int x, int y){
 		if(x < 0 || x >= width || y < 0 || y >= height)return Tile.VOID_TILE;
 		
 		switch(tileColors[x + y * width]){

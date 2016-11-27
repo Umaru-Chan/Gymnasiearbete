@@ -3,6 +3,8 @@ package se.gafw.graphics;
 public class Sprite {
 	
 	public static final Sprite VOID = new Sprite(SpriteSheet.TILES, 0, 0, 16);
+	public static final Sprite TEST = new Sprite(SpriteSheet.TILES, 1, 0, 16);
+	public static final Sprite PLAYER = new Sprite(SpriteSheet.TILES, 2, 2, 32);
 	
 	public int[] pixels;
 	public int width, height;

@@ -7,16 +7,22 @@ import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferInt;
 import java.io.IOException;
 
+import se.gafw.gameObjects.Player;
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Window;
 import se.gafw.level.Level;
 import se.gafw.util.KeyInput;
 import se.gafw.util.MouseInput;
 
+/**
+ * Måste fixa kollitionen!!
+ */
+
+
 public class Gyarb extends Canvas implements Runnable{
 	public static final long serialVersionUID = 1L;
 	
-	public static final int WIDTH = 400, HEIGHT = WIDTH / 16 * 9, SCALE = 3;
+	public static final int WIDTH = 450, HEIGHT = WIDTH / 16 * 9, SCALE = 3;
 	public static final short VERSION_MAJOR = 0, VERSION_MINOR = 1;
 	public static final String TITLE = "gyarb " + VERSION_MAJOR + "." + VERSION_MINOR;
 
@@ -25,6 +31,7 @@ public class Gyarb extends Canvas implements Runnable{
 	
 	private final Window window;
 	private final Screen screen;
+    private final Player player;
 	private final KeyInput key;
 	private final MouseInput mouse;
 	private Level currentLevel;
@@ -42,8 +49,9 @@ public class Gyarb extends Canvas implements Runnable{
 		addKeyListener(key = new KeyInput());
 		addMouseListener(mouse = new MouseInput());
 		addMouseMotionListener(mouse);
-		currentLevel = Level.TEST;
-		running = true;
+		//currentLevel = Level.TEST;
+		currentLevel = Level.randomLevel(5, 150, 10);
+        player = new Player(currentLevel, -WIDTH * SCALE - 500 >> 14, -150, key);
 		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
 	}
 	
@@ -64,7 +72,8 @@ public class Gyarb extends Canvas implements Runnable{
 
 	/**
 	 * huvodloopen (antar att man kan skriva det?) TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
-	 * 日本語はわかりますか?
+	 * 日本語を分かりますか?
+     * 何日迄仕上げか
 	 */
 	public void run() {
 		int frames = 0, updates = 0;
@@ -101,13 +110,15 @@ public class Gyarb extends Canvas implements Runnable{
 	 * rendera allt här, render metoden kommer att kallas så många gånger per sekund som datorn kan
 	 */
 	private void render() {
+		if(window.shouldClose())//TODO fixa en crash
+            return;
 		BufferStrategy buffer = getBufferStrategy();
 		Graphics g = buffer.getDrawGraphics();
 		screen.clear();
 
 		// TODO rendera saker här
-		currentLevel.render(screen, 0, 0);
-
+		currentLevel.render(screen, player.getX(), player.getY());
+        player.render(screen);
 		// sluta rendera här
 
 		System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
@@ -122,7 +133,7 @@ public class Gyarb extends Canvas implements Runnable{
 	 * TODO deltaTime ???
 	 */
 	private void update() {
-		
+		player.update();
 	}
 	
 	public Level getCurrentLevel(){
