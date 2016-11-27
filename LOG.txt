@@ -1,7 +1,7 @@
 V.47
 
-[v.48 tisdag] Alexander : Slumpmässigt genererade nivåer.
+[v.48 tisdag (✓)] Alexander : Slumpmässigt genererade nivåer.
 
-[v.48 tisdag] Mathias : Inventory
+[v.48 tisdag ( )] Mathias : Inventory
 
-[ ] Hampus :
+[v.48 tisdag ( )] Hampus :
