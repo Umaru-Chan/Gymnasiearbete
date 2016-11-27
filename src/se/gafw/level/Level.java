@@ -3,6 +3,7 @@ package se.gafw.level;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -11,7 +12,7 @@ import se.gafw.graphics.Screen;
 
 public class Level {
 
-	public static final Level TEST = new Level(256, 256);
+	public static final Level TEST = new Level(new Random(), 256, 256, new int[]{0xffffffff, 0xff000000});
 	
 	private int width, height;
 	//private Tile[] tiles;
@@ -32,6 +33,23 @@ public class Level {
 		}
 	}
 	
+	/**
+	 * Generera en slumpmässig uppsättning tiles.
+	 * @param random
+	 * @param width
+	 * @param height
+	 * @param tile  	en array med färgerna för alla tiles som man vill ha
+	 */
+	public Level(Random random, int width, int height, int[] tile){
+		this.width = width;
+		this.height = height;
+		tileColors = new int[width * height];
+		for(int i = 0; i < tileColors.length; i++)
+		{
+			tileColors[i] = tile[random.nextInt(tile.length)];
+		}
+	}
+	
 	//använd inte atm
 	@Deprecated
 	public Level(int width, int height) {
@@ -42,11 +60,13 @@ public class Level {
 	}
 	
 	public void render(Screen screen, int xOffs, int yOffs) {
+		screen.setScroll(xOffs, yOffs);
 		int x0 = xOffs >> 4;// >> 4 = / 16
 		int x1 = (xOffs + screen.width + 16) >> 4;
 		int y0 = yOffs >> 4;
 		int y1 = (yOffs + screen.height + 16) >> 4;
 		//TODO matte
+		
 		//if(xp < 0 || xp >= width)
 		
 		for(int y = y0; y < y1; y++){
@@ -64,6 +84,7 @@ public class Level {
 		
 		switch(tileColors[x + y * width]){
 		case Tile.VOID_COLOR:return Tile.VOID_TILE;
+		case Tile.TEST_COLOR:return Tile.TEST_TILE;
 		}
 		
 		return Tile.VOID_TILE;
