@@ -5,3 +5,8 @@ V.47
 [v.48 tisdag ( )] Mathias : Inventory
 
 [v.48 tisdag ( )] Hampus : Förstå koden, inventory-bild, Rita grunden för spelarens "spritesheet animation" 
+
+
+v.48
+
+[v.49 tisdag ( )] Alexander : ta bort och lägga till block
