@@ -52,6 +52,7 @@ public class Gyarb extends Canvas implements Runnable{
 		//currentLevel = Level.TEST;
 		currentLevel = Level.randomLevel(5, 150, 10);
         player = new Player(currentLevel, -WIDTH * SCALE - 500 >> 14, -150, key);
+		addMouseListener(player);//bara temporärt
 		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
 	}
 	
