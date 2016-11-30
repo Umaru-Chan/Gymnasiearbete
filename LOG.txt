@@ -10,3 +10,7 @@ V.47
 v.48
 
 [v.49 tisdag ( )] Alexander : ta bort och lägga till block
+
+[v.49 tisdag ( )] Mathias : Ta bort och lägga till items i inventory
+
+[v.49 ( )] Hampus : 
