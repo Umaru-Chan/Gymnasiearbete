@@ -9,6 +9,8 @@ import javax.imageio.ImageIO;
 
 import se.gafw.gameObjects.Entity;
 import se.gafw.graphics.Screen;
+import se.gafw.graphics.Sprite;
+import se.gafw.graphics.SpriteSheet;
 
 public class Level {
 
@@ -17,6 +19,7 @@ public class Level {
 	private int width, height;
 	//private Tile[] tiles;
 	private int[] tileColors;
+	private int xOffs, yOffs;
 	private ArrayList<Entity> entities = new ArrayList<>();
 	
 	public Level(String path){
@@ -62,6 +65,7 @@ public class Level {
                 else tileColors[x + y * width] = Tile.VOID_COLOR;
             }
         }
+        tileColors[0] = 0x55;
 
         return result = new Level(tileColors, width, depth);
     }
@@ -94,6 +98,8 @@ public class Level {
 	
 	public void render(Screen screen, int xOffs, int yOffs) {
 		screen.setScroll(xOffs, yOffs);
+		this.xOffs = xOffs;
+		this.yOffs = yOffs;
 		int x0 = xOffs >> 4;// >> 4 = / 16
 		int x1 = (xOffs + screen.width + 16) >> 4;
 		int y0 = yOffs >> 4;
@@ -112,15 +118,59 @@ public class Level {
 		renderEntities(screen);
 	}
 
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return tilen på x och y (notera att x å y inte kan vara större än bredden och höjden av nivån)
+	 */
 	public Tile getTile(int x, int y){
-		if(x < 0 || x >= width || y < 0 || y >= height)return Tile.VOID_TILE;
+		if(outOfBounds(x, y))return Tile.VOID_TILE;
 		
 		switch(tileColors[x + y * width]){
 		case Tile.VOID_COLOR:return Tile.VOID_TILE;
 		case Tile.TEST_COLOR:return Tile.TEST_TILE;
+		case 0x55:return Tile.LMAO;
 		}
 		
 		return Tile.VOID_TILE;
+	}
+	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 * @return true om x och y är utanför nivån
+	 */
+	private boolean outOfBounds(int x, int y){
+		if(x < 0 || x >= width || y < 0 || y >= height)return true;
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void removeBlock(int x, int y)
+	{
+		System.out.println("x:"+x+"\ty:"+y);
+		
+		if(getTile(x, y).equals(Tile.VOID_TILE))return;//ta inte bort void
+		tileColors[x + y * width] = Tile.VOID_COLOR;
+	}
+	
+	/**
+	 * 
+	 * @param x
+	 * @param y
+	 */
+	public void addBlock(int x, int y)
+	{
+		System.out.println("x:"+x+"\ty:"+y);
+		
+		if(!getTile(x, y).equals(Tile.VOID_TILE) || outOfBounds(x, y))return;//bygg inte på annat än void
+		tileColors[x + y * width] = 0x55;
 	}
 	
 	private void renderEntities(Screen screen){
