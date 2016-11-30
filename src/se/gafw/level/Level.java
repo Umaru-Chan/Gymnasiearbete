@@ -57,7 +57,6 @@ public class Level {
             {
                 if(y + depth >= h[x])
                 {
-                    System.out.println("lmao");
                     tileColors[x + y * width] = Tile.TEST_COLOR;
                 }
                 else tileColors[x + y * width] = Tile.VOID_COLOR;
