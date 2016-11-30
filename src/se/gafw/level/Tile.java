@@ -5,6 +5,7 @@ import se.gafw.graphics.Sprite;
 
 public abstract class Tile {
 	
+	public static final Tile LMAO = new AirTile(new Sprite(SpriteSheet.TILES, 4,4,16));//TEMP
 	public static final Tile VOID_TILE = new AirTile(Sprite.VOID);
 	public static final int VOID_COLOR = 0xffffffff;
 	public static final Tile TEST_TILE = new CollidableTile(Sprite.TEST);
