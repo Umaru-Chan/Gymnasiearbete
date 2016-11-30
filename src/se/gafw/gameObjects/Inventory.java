@@ -44,9 +44,11 @@ public class Inventory {
 
 	private int findSlot(Item item) {
 		for(int i = 0; i < slots.length; i++) {
-			if(slots[i] == null || slots[i].getSprite() == item.getSprite())
+			if(slots[i] == null)
 				return i;
-			else
+			else if(slots[i].getSprite() == item.getSprite())
+				continue;
+			else if(slots[i] != null && slots[i].getSprite() != item.getSprite())
 				i = i + stack;
 		}
 		return -1;
