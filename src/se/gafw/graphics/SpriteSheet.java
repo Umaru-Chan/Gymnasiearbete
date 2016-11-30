@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 public class SpriteSheet {
 	
 	public static final SpriteSheet TILES = new SpriteSheet("res/graphics/sheet.png");
-	public static final SpriteSheet INVENTORY = new SpriteSheet("res/graphics/Invt2_5.png");
+	public static final SpriteSheet INVENTORY = new SpriteSheet("res/graphics/inventory.png");
 	
 	public int[] pixels;
 	public final int width, height;
