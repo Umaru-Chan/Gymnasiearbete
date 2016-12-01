@@ -14,6 +14,12 @@ public class Player extends Entity implements MouseListener{
 
     private KeyInput in;
     private float dy = 0;
+    private Direction dir = null;
+    
+    enum Direction{
+    	RIGHT,
+    	LEFT
+    }
 
     public Player(Level level, float x, float y, KeyInput in) {
         super(level, x, y, Sprite.PLAYER);
@@ -25,13 +31,22 @@ public class Player extends Entity implements MouseListener{
         if(dy < 0)dy = 0;//don't even know (jo det gÃ¶r jag)
         if(dy > 0)dy-=.2;//om man har hoppat ska man falla (?)
         move(0, 1 - dy); //ramla alltid nedÃ¥t
-        if(in.getKeyStatus(KeyEvent.VK_A))move(-1,  0);
-        if(in.getKeyStatus(KeyEvent.VK_D))move( 1,  0);
+        if(in.getKeyStatus(KeyEvent.VK_A)){
+        	dir = Direction.LEFT;
+        	move(-1,  0);//flippa även karaktären
+        }
+        if(in.getKeyStatus(KeyEvent.VK_D)){
+        	dir = Direction.RIGHT;
+        	move( 1,  0);
+        }
+        
+        
         if(in.getKeyStatus(KeyEvent.VK_SPACE) && dy == 0)dy = 6;
     }
 
     public void render(Screen screen) {
-        screen.renderSprite(sprite, Gyarb.WIDTH / 2 - sprite.width / 2, Gyarb.HEIGHT / 2 - sprite.height / 2, false);
+        screen.renderSprite(sprite, Gyarb.WIDTH / 2 - sprite.width / 2, Gyarb.HEIGHT / 2 - sprite.height / 2,
+        		/*om man går åt vänster så ska spelaren renderas flippad i x led*/dir == Direction.LEFT, false);
         
     }
 
