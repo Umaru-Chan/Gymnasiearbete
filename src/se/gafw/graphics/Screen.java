@@ -39,14 +39,51 @@ public class Screen {
 	 * @param y
 	 * @param clipped
 	 */
-	public void renderSprite(Sprite sprite, int x, int y, boolean clipped /*TODO*/){
+	public void renderSprite(Sprite sprite, int x, int y, boolean fixed/*TODO*/){
 		for(int v = 0; v < sprite.height; v++){
+			
 			int vp = v + y;
 			if(vp < 0 || vp >= height)continue;
 			for(int u = 0; u < sprite.width; u++){
+
 				int up = u + x;
-				if(up < 0 || up >= width)continue;				
-				pixels[up + vp * width] = sprite.pixels[u + v * sprite.width];
+				if(up < 0 || up >= width)continue;		
+				int col = sprite.pixels[u + v * sprite.width];
+				if(col == 0xffff00ff || col == 0xff7f007f)continue;
+				pixels[up + vp * width] = col;
+			}
+		}	
+	}
+	
+	/**
+	 * 
+	 * @param sprite
+	 * @param x
+	 * @param y
+	 * @param flippedX
+	 * @param flippedY
+	 */
+	public void renderSprite(Sprite sprite, int x, int y, boolean flippedX, boolean flippedY){
+		for(int v = 0; v < sprite.height; v++){
+			//om man ska flippa y ledet
+			int vs = v;
+			if(flippedY)vs = sprite.height - v - 1;
+			
+			int vp = v + y;
+			if(vp < 0 || vp >= height)continue;
+			
+			for(int u = 0; u < sprite.width; u++){
+				//om man ska flippa x ledet
+				int us = u;
+				if(flippedX)us = sprite.width - u - 1;
+				
+				int up = u + x;
+				if(up < 0 || up >= width)continue;
+				
+				int col = sprite.pixels[us + vs * sprite.width];
+				if(col == 0xffff00ff || col == 0xff7f007f)continue;
+				
+				pixels[up + vp * width] = col;
 			}
 		}	
 	}
@@ -63,7 +100,11 @@ public class Screen {
 					break;
 				if (xa < 0)
 					xa = 0;
-				pixels[xa + ya * width] = tile.sprite.pixels[x + y * tile.sprite.width];
+				
+				int col = tile.sprite.pixels[x + y * tile.sprite.width];
+				if(col == 0xffff00ff || col == 0xff7f007f)continue;
+				
+				pixels[xa + ya * width] = col;
 			}
 		}
 	}
