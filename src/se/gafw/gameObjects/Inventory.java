@@ -5,17 +5,13 @@ import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
 
 public class Inventory {
-
-	//Inventory är inte klar!
 	
 	private final int size = 27; //9*3
 	private final int stack = 64;
 	
-	private Item[] slots = new Item[size * stack]; //For every position
+	private Item[] slots = new Item[size * stack]; 
 	private Sprite sprite;
-	
-	private int x, y;
-	
+			
 	public Inventory(Sprite sprite) {
 		this.sprite = sprite;
 	}
@@ -37,7 +33,12 @@ public class Inventory {
 	public void render(Screen screen) {
 		screen.renderSprite(sprite, Gyarb.WIDTH / 2 - sprite.width / 2, Gyarb.HEIGHT / 2 - sprite.height / 2, false);
 		
-		//TODO render items, get x and y positions
+		for(int i = 0; i < size; i++) {
+			if(slots[i*stack] != null) {
+				slots[i * stack].render(screen, Gyarb.WIDTH / 2 - sprite.width / 2 + 4 + ((i%9) * 20), 
+						Gyarb.HEIGHT / 2 - sprite.height / 2 + 4 + (i / 9) * 20);
+			}
+		}
 		
 		//TODO show how many items every slot has
 	}
@@ -49,7 +50,7 @@ public class Inventory {
 			else if(slots[i].getSprite() == item.getSprite())
 				continue;
 			else if(slots[i] != null && slots[i].getSprite() != item.getSprite())
-				i = i + stack;
+				i = i - 1 + stack;
 		}
 		return -1;
 	}
