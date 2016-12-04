@@ -26,14 +26,14 @@ public class Player extends Entity implements MouseListener{
         this.in = in;
     }
 
-    //bara temporär kod för att testa kollision
+    //bara temporÃ¤r kod fÃ¶r att testa kollision
     public void update() {
-        if(dy < 0)dy = 0;//don't even know (jo det gör jag)
+        if(dy < 0)dy = 0;//don't even know (jo det gÃ¶r jag)
         if(dy > 0)dy-=.2;//om man har hoppat ska man falla (?)
-        move(0, 1 - dy); //ramla alltid nedåt
+        move(0, 1 - dy); //ramla alltid nedÃ¥t
         if(in.getKeyStatus(KeyEvent.VK_A)){
         	dir = Direction.LEFT;
-        	move(-1,  0);//flippa �ven karakt�ren
+        	move(-1,  0);//flippa även karaktären
         }
         if(in.getKeyStatus(KeyEvent.VK_D)){
         	dir = Direction.RIGHT;
@@ -46,8 +46,10 @@ public class Player extends Entity implements MouseListener{
 
     public void render(Screen screen) {
         screen.renderSprite(sprite, Gyarb.WIDTH / 2 - sprite.width / 2, Gyarb.HEIGHT / 2 - sprite.height / 2,
-        		/*om man g�r �t v�nster s� ska spelaren renderas flippad i x led*/dir == Direction.LEFT, false);
+        		/*om man går åt vänster så ska spelaren renderas flippad i x led*/dir == Direction.LEFT, false);
         
+	    if(in.getKeyStatus(KeyEvent.VK_Q))
+        	inventory.render(screen);
     }
 
     public int getX(){
