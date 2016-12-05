@@ -16,6 +16,8 @@ public class Player extends Entity implements MouseListener{
     private float dy = 0;
     private Direction dir = null;
     
+    private Inventory inventory = new Inventory(Sprite.INVENTORY);
+	
     enum Direction{
     	RIGHT,
     	LEFT
