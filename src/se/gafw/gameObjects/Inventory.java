@@ -7,11 +7,13 @@ import se.gafw.graphics.Sprite;
 public class Inventory {
 	
 	private final int size = 27; //9*3
-	private final int stack = 64;
+	public final int stack = 64;
 	
-	private Item[] slots = new Item[size * stack]; 
+	public Item[] slots = new Item[size * stack]; 
 	private Sprite sprite;
-			
+		
+	public boolean rendering = false;
+	
 	public Inventory(Sprite sprite) {
 		this.sprite = sprite;
 	}
@@ -25,9 +27,9 @@ public class Inventory {
 			System.out.println("Inventory is full");
 	}
 	
-	public void removeItem() {
+	public void removeItem(int i) {
 		//TODO remove items
-		
+		slots[i] = null;
 	}
 	
 	public void render(Screen screen) {
@@ -35,14 +37,15 @@ public class Inventory {
 		
 		for(int i = 0; i < size; i++) {
 			if(slots[i*stack] != null) {
-				slots[i * stack].render(screen, Gyarb.WIDTH / 2 - sprite.width / 2 + 4 + ((i%9) * 20), 
+				slots[i * stack].render(screen, Gyarb.WIDTH / 2 - sprite.width / 2 + 4 + ((i % 9) * 20), 
 						Gyarb.HEIGHT / 2 - sprite.height / 2 + 4 + (i / 9) * 20);
 			}
 		}
+				
+		//TODO show how many items every slot has 
 		
-		//TODO show how many items every slot has
 	}
-
+	
 	private int findSlot(Item item) {
 		for(int i = 0; i < slots.length; i++) {
 			if(slots[i] == null)
@@ -50,9 +53,12 @@ public class Inventory {
 			else if(slots[i].getSprite() == item.getSprite())
 				continue;
 			else if(slots[i] != null && slots[i].getSprite() != item.getSprite())
-				i = i - 1 + stack;
+				i = i + stack - 1;
 		}
 		return -1;
 	}
 	
+	public Sprite getSprite() {
+		return sprite;
+	}
 }
