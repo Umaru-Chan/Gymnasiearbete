@@ -7,9 +7,9 @@ import se.gafw.graphics.Sprite;
 public class Inventory {
 	
 	private final int size = 27; //9*3
-	public final int stack = 64;
+	private final int stack = 64;
 	
-	public Item[] slots = new Item[size * stack]; 
+	private Item[] slots = new Item[size * stack]; 
 	private Sprite sprite;
 		
 	public Inventory(Sprite sprite) {
