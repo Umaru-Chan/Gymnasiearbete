@@ -12,8 +12,6 @@ public class Inventory {
 	public Item[] slots = new Item[size * stack]; 
 	private Sprite sprite;
 		
-	public boolean rendering = false;
-	
 	public Inventory(Sprite sprite) {
 		this.sprite = sprite;
 	}
