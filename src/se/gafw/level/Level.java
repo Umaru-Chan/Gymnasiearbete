@@ -20,6 +20,7 @@ public class Level {
 	//private Tile[] tiles;
 	private int[] tileColors;
 	private int xOffs, yOffs;
+	private long updates; //för att hålla koll på hur många uppdateringar som har skett
 	private ArrayList<Entity> entities = new ArrayList<>();
 	
 	public Level(String path){
@@ -60,7 +61,7 @@ public class Level {
             {
                 if(y + depth >= h[x])
                 {
-                    tileColors[x + y * width] = Tile.TEST_COLOR;
+                    tileColors[x + y * width] = Tile.GRASS_COLOR;
                 }
                 else tileColors[x + y * width] = Tile.VOID_COLOR;
             }
@@ -71,11 +72,11 @@ public class Level {
     }
 
 	/**
-	 * Generera en slumpmässig uppsättning tiles.
+	 * Generera en slumpmÃ¤ssig uppsÃ¤ttning tiles.
 	 * @param random
 	 * @param width
 	 * @param height
-	 * @param tile  	en array med färgerna för alla tiles som man vill ha
+	 * @param tile  	en array med fÃ¤rgerna fÃ¶r alla tiles som man vill ha
 	 */
 	public Level(Random random, int width, int height, int[] tile){
 		this.width = width;
@@ -87,7 +88,7 @@ public class Level {
 		}
 	}
 	
-	//använd inte atm
+	//anvÃ¤nd inte atm
 	@Deprecated
 	public Level(int width, int height) {
 		this.width = width;
@@ -108,14 +109,16 @@ public class Level {
 		
 		//if(xp < 0 || xp >= width)
 		
-		Tile temp;
+		Tile temp = Tile.VOID_TILE;
 		for(int y = y0; y < y1; y++){
 			for(int x = x0; x < x1; x++){
-				if(!(temp = getTile(x, y)).equals(Tile.VOID_TILE))temp.render(screen, x, y);
+				temp = getTile(x, y);
+				if(!temp.equals(Tile.VOID_TILE))
+					temp.render(screen, x, y);
 			}
 		}
 		
-		//rendera allt över alla tiles
+		//rendera allt Ã¶ver alla tiles
 		renderEntities(screen);
 	}
 
@@ -123,15 +126,15 @@ public class Level {
 	 * 
 	 * @param x
 	 * @param y
-	 * @return tilen på x och y (notera att x å y inte kan vara större än bredden och höjden av nivån)
+	 * @return tilen pÃ¥ x och y (notera att x Ã¥ y inte kan vara stÃ¶rre Ã¤n bredden och hÃ¶jden av nivÃ¥n)
 	 */
 	public Tile getTile(int x, int y){
 		if(outOfBounds(x, y))return Tile.VOID_TILE;
 		
 		switch(tileColors[x + y * width]){
-		case Tile.VOID_COLOR:return Tile.VOID_TILE;
-		case Tile.TEST_COLOR:return Tile.TEST_TILE;
-		case 0x55:return Tile.LMAO;
+		case Tile.VOID_COLOR:	return Tile.VOID_TILE;
+		case Tile.GRASS_COLOR:	return Tile.GRASS_TILE;
+		case Tile.DIRT_COLOR:	return Tile.DIRT_TILE;
 		}
 		
 		return Tile.VOID_TILE;
@@ -141,7 +144,7 @@ public class Level {
 	 * 
 	 * @param x
 	 * @param y
-	 * @return true om x och y är utanför nivån
+	 * @return true om x och y Ã¤r utanfÃ¶r nivÃ¥n
 	 */
 	private boolean outOfBounds(int x, int y){
 		if(x < 0 || x >= width || y < 0 || y >= height)return true;
@@ -155,10 +158,9 @@ public class Level {
 	 */
 	public void removeBlock(int x, int y)
 	{
-		System.out.println("x:"+x+"\ty:"+y);
-		
 		if(getTile(x, y).equals(Tile.VOID_TILE))return;//ta inte bort void
 		tileColors[x + y * width] = Tile.VOID_COLOR;
+		updateGrass();
 	}
 	
 	/**
@@ -166,12 +168,11 @@ public class Level {
 	 * @param x
 	 * @param y
 	 */
-	public void addBlock(int x, int y)
+	public void addBlock(int x, int y, int tileColor)
 	{
-		System.out.println("x:"+x+"\ty:"+y);
-		
-		if(!getTile(x, y).equals(Tile.VOID_TILE) || outOfBounds(x, y))return;//bygg inte på annat än void
-		tileColors[x + y * width] = 0x55;
+		if(!getTile(x, y).equals(Tile.VOID_TILE) || outOfBounds(x, y))return;//bygg inte pÃ¥ annat Ã¤n void
+		tileColors[x + y * width] = tileColor;
+		updateGrass();
 	}
 	
 	private void renderEntities(Screen screen){
@@ -183,7 +184,32 @@ public class Level {
 	public void update() {
 		for (int i = 0; i < entities.size(); i++)
 			entities.get(i).update();
+		updateGrass();
 	}
+	
+	private void updateGrass()
+	{
+		//kan uppenbarligen inte ha ngt över jord över det översta lagret av nivån, därför börjar man scanna
+		//på width + 1
+		for(int x = 0; x < width; x++)
+		{
+			for(int y = 0; y < height - 1; y++)
+			{
+				//kolla om det finns ett block (inte void) över gräs
+				if(tileColors[x + y * width] != Tile.VOID_COLOR
+						&& tileColors[x + (y + 1) * width] == Tile.GRASS_COLOR)
+					tileColors[x + (y + 1) * width] = Tile.DIRT_COLOR;
+				
+				//kolla om det finns void över dirt
+				if(tileColors[x + y * width] == Tile.VOID_COLOR
+						&& tileColors[x + (y + 1) * width] == Tile.DIRT_COLOR)
+					tileColors[x + (y + 1) * width] = Tile.GRASS_COLOR;
+				//TODO göra så att det måste vara void hela vägen upp innan ett dirt blir gräs
+				
+			}
+		}
+	}
+	
 	
 	public void addEntity(Entity entity) {
 		entities.add(entity);
@@ -192,5 +218,4 @@ public class Level {
 	public void killEntity(Entity entity) {
 		entities.remove(entity);
 	}
-	
 }
