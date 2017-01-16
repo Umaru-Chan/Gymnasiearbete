@@ -64,10 +64,12 @@ public class Player extends Entity implements MouseListener{
 
 
 	public void mousePressed(MouseEvent e) {
-		int x = (e.getX() >> 4) / Gyarb.SCALE + ((int) (this.x + .5) >> 4);
-		int y = (e.getY() >> 4) / Gyarb.SCALE + ((int) (this.y + .5) >> 4);
+		//int x = (e.getX() >> 4) / Gyarb.SCALE + ((int) (this.x + .5) >> 4);
+		//int y = (e.getY() >> 4) / Gyarb.SCALE + ((int) (this.y + .5) >> 4);
+		int x = (int)(e.getX() / Gyarb.SCALE + this.x) >> 4;
+		int y = (int)(e.getY() / Gyarb.SCALE + this.y) >> 4;
 		if(e.getButton() == MouseEvent.BUTTON1)level.removeBlock(x, y);
-		if(e.getButton() == MouseEvent.BUTTON3)level.addBlock(x, y);
+		if(e.getButton() == MouseEvent.BUTTON3)level.addBlock(x, y, Tile.GRASS_COLOR);
 	}
 	public void mouseClicked(MouseEvent e) {}
 	public void mouseReleased(MouseEvent e) { }
