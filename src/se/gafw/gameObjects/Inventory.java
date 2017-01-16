@@ -38,10 +38,7 @@ public class Inventory {
 				slots[i * stack].render(screen, Gyarb.WIDTH / 2 - sprite.width / 2 + 4 + ((i % 9) * 20), 
 						Gyarb.HEIGHT / 2 - sprite.height / 2 + 4 + (i / 9) * 20);
 			}
-		}
-				
-		//TODO show how many items every slot has 
-		
+		}		
 	}
 	
 	private int findSlot(Item item) {
