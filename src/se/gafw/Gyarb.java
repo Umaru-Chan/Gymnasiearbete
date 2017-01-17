@@ -135,6 +135,7 @@ public class Gyarb extends Canvas implements Runnable{
 	 */
 	private void update() {
 		player.update();
+		currentLevel.update();
 	}
 	
 	public Level getCurrentLevel(){
