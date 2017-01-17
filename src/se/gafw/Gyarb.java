@@ -50,8 +50,8 @@ public class Gyarb extends Canvas implements Runnable{
 		addMouseListener(mouse = new MouseInput());
 		addMouseMotionListener(mouse);
 		//currentLevel = Level.TEST;
-		currentLevel = Level.randomLevel(5, 150, 10);
-        player = new Player(currentLevel, -WIDTH * SCALE - 500 >> 14, -150, key);
+		currentLevel = Level.randomLevel(5, 150, 100);
+	        player = new Player(currentLevel, 75 << 4, 35 << 4, key); //multiplicerar med 16 för att få positionen i block och inte pixlar
 		addMouseListener(player);//bara temporärt
 		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
 	}
