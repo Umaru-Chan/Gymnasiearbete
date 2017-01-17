@@ -25,7 +25,12 @@ public class Player extends Entity implements MouseListener{
 
     public Player(Level level, float x, float y, KeyInput in) {
         super(level, x, y, Sprite.PLAYER);
-        this.in = in;
+
+        //se till att man spawnar på marken när man skapar en spelare
+    	while(!collision(0, 1))
+    		move(0, 1);
+        
+	this.in = in;
     }
 
     //bara temporÃ¤r kod fÃ¶r att testa kollision
