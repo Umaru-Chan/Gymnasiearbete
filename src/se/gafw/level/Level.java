@@ -44,7 +44,7 @@ public class Level {
         this.height = height;
     }
 
-	public static Level randomLevel(int amplitude, int width, int depth)
+    public static Level randomLevel(int amplitude, int width, int depth)
     {
         Random random = new Random();
         
@@ -52,22 +52,26 @@ public class Level {
         int[] tileColors = new int[width * depth];
         for(int i = 0; i < width; i++)
         {
-            h[i] = depth + random.nextInt(amplitude);
+            h[i] = depth / 2 - random.nextInt(amplitude);
         }
 
         for(int x = 0; x < width; x++)
         {
-            for(int y = 0; y < depth; y++)
+            for(int y = depth / 3; y < depth; y++)
             {
-                if(y + depth >= h[x])
+                if(y /*+ depth*/ >= h[x])
                 {
-                    tileColors[x + y * width] = Tile.GRASS_COLOR;
+                	
+                    tileColors[x + y * width] = Tile.DIRT_COLOR;
                 }
                 else tileColors[x + y * width] = Tile.VOID_COLOR;
             }
         }
-        tileColors[0] = 0x55;
-
+        
+        //temp
+        for(int i = 0; i < tileColors.length; i++)
+        	if(tileColors[i] == 0)tileColors[i] = Tile.VOID_COLOR;
+        
         return new Level(tileColors, width, depth);
     }
 
