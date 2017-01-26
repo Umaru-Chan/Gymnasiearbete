@@ -29,9 +29,9 @@ public abstract class Entity {
 	}
 
 	/**
-	 * just nu så räknar man på alla 4 hörn
-	 * TODO göra "ett till hörn" i mitten av alla kanter och räkna på dom också så att spelaren som är dubbelt så bred
-	 * TODO som blocken inte faller igenom blocken som är i mitten
+	 * just nu sÃ¥ rÃ¤knar man pÃ¥ alla 4 hÃ¶rn
+	 * TODO gÃ¶ra "ett till hÃ¶rn" i mitten av alla kanter och rÃ¤kna pÃ¥ dom ocksÃ¥ sÃ¥ att spelaren som Ã¤r dubbelt sÃ¥ bred
+	 * TODO som blocken inte faller igenom blocken som Ã¤r i mitten
 	 * @param xa
 	 * @param ya
 	 * @return
@@ -48,7 +48,17 @@ public abstract class Entity {
 		}
 
 		//if(level.getTile(((int)(rx+xa) + 16) >> 4, ((int)(ry+ya) + 32)).solid())solid = true;
-
+				{
+			int xt = ((int)(rx+xa) - 4 % 2 * 31 + 31) >> 4;
+			int yt = ((int)(ry+ya) + 2 / 2 * 31) >> 4;
+			if(level.getTile(xt,yt).solid())solid = true;
+		}
+		
+		{
+			int xt = ((int)(rx+xa) - 4 % 2 * 31 + 31) >> 4;
+			int yt = ((int)(ry+ya) + 1 / 2 * 31) >> 4;
+			if(level.getTile(xt,yt).solid())solid = true;
+		}
 
 		return solid;
 	}
