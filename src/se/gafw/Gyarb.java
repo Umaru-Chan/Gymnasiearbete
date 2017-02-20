@@ -2,17 +2,13 @@ package se.gafw;
 
 import java.awt.Canvas;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferInt;
-import java.io.IOException;
 
-import se.gafw.gameObjects.Player;
+import se.gafw.gameState.GameStateManager;
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Window;
-import se.gafw.level.Level;
-import se.gafw.util.KeyInput;
-import se.gafw.util.MouseInput;
+import se.gafw.util.KeyboardInput;
 
 /**
  * Måste fixa kollitionen!!
@@ -23,7 +19,7 @@ public class Gyarb extends Canvas implements Runnable{
 	public static final long serialVersionUID = 1L;
 	
 	public static final int WIDTH = 450, HEIGHT = WIDTH / 16 * 9, SCALE = 3;
-	public static final short VERSION_MAJOR = 0, VERSION_MINOR = 1;
+	public static final short VERSION_MAJOR = 0, VERSION_MINOR = 5;
 	public static final String TITLE = "gyarb " + VERSION_MAJOR + "." + VERSION_MINOR;
 
 	private boolean running;
@@ -31,29 +27,16 @@ public class Gyarb extends Canvas implements Runnable{
 	
 	private final Window window;
 	private final Screen screen;
-    private final Player player;
-	private final KeyInput key;
-	private final MouseInput mouse;
-	private Level currentLevel;
-
-	private final BufferedImage image;
-	private final int[] pixels;
-	
 	/**
 	 * 
 	 */
 	public Gyarb() {
-		pixels = ((DataBufferInt) 
-				(image = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB)).getRaster().getDataBuffer()).getData();
-		screen = new Screen(WIDTH, HEIGHT, 0x8888ff);
-		addKeyListener(key = new KeyInput());
-		addMouseListener(mouse = new MouseInput());
-		addMouseMotionListener(mouse);
-		//currentLevel = Level.TEST;
-		currentLevel = Level.randomLevel(5, 150, 100);
-	        player = new Player(currentLevel, 75 << 4, 35 << 4, key); //multiplicerar med 16 för att få positionen i block och inte pixlar
-		addMouseListener(player);//bara temporärt
 		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
+		screen = new Screen(WIDTH, HEIGHT, 0x8888ff);
+		
+		addKeyListener(new KeyboardInput());
+		GameStateManager.init(this);
+		start();		
 	}
 	
 	public synchronized void start(){
@@ -81,25 +64,30 @@ public class Gyarb extends Canvas implements Runnable{
 		double delta = 0.0D, ns = 1e9 / 60.0D;
 		long lastTime = System.nanoTime();
 		long timer = System.currentTimeMillis();
-		super.createBufferStrategy(3);
+		
 		this.requestFocus();
+		super.createBufferStrategy(3);
+		
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			while (delta >= 1) {
-				//TODO uppdatera med deltatid
 				update();
 				updates++;
 				delta--;
 			}
+			
 			render();
 			frames++;
+			
 			try{
-				Thread.sleep(1);
+				Thread.sleep(5); //TODO fixa 60fps inte 100 (får ca 400 på macen om man inte sleepar)
 			}catch(InterruptedException e){}
+			
 			if (System.currentTimeMillis() - timer >= 1e3) {
 				window.setTitle(TITLE + " fps: " + frames + " ups: " + updates);
+				
 				updates = frames = 0;
 				timer += 1e3;
 			}
@@ -115,31 +103,18 @@ public class Gyarb extends Canvas implements Runnable{
             return;
 		BufferStrategy buffer = getBufferStrategy();
 		Graphics g = buffer.getDrawGraphics();
-		screen.clear();
-
-		// TODO rendera saker här
-		currentLevel.render(screen, player.getX(), player.getY());
-        player.render(screen);
-		// sluta rendera här
-
-		System.arraycopy(screen.pixels, 0, pixels, 0, pixels.length);
-		g.drawImage(image, 0, 0, WIDTH * SCALE, HEIGHT * SCALE, null);
-
+		
+		GameStateManager.render(screen, (Graphics2D) g);
+		
 		g.dispose();
 		buffer.show();
 	}
-
+	
 	/**
 	 * uppdatera all rörelse och logik i spelet (update kommer alltid att kallas 60ggr per sekund oberoende av system)
-	 * TODO deltaTime ???
 	 */
 	private void update() {
-		player.update();
-		currentLevel.update();
-	}
-	
-	public Level getCurrentLevel(){
-		return currentLevel;
+		GameStateManager.update();
 	}
 
 	public static void main(String[] args) {
