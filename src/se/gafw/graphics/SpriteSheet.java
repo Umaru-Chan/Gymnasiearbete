@@ -10,6 +10,7 @@ public class SpriteSheet {
 	
 	public static final SpriteSheet TILES = new SpriteSheet("res/graphics/sheet.png");
 	public static final SpriteSheet INVENTORY = new SpriteSheet("res/graphics/inventory.png");
+	public static final SpriteSheet TOOLBAR = new SpriteSheet("res/graphics/Toolbar.png");
 	
 	public int[] pixels;
 	public final int width, height;
