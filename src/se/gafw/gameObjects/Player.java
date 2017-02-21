@@ -12,9 +12,10 @@ import se.gafw.util.KeyInput;
 
 public class Player extends Entity implements MouseListener{
 
-    private KeyInput in;
     private float dy = 0;
     private Direction dir = null;
+    private boolean jumping = false, showInventory = false;
+    private boolean[] keys = new boolean[2550];
     
     private Inventory inventory = new Inventory(Sprite.INVENTORY);
 	
@@ -23,7 +24,7 @@ public class Player extends Entity implements MouseListener{
     	LEFT
     }
 
-    public Player(Level level, float x, float y, KeyInput in) {
+    public Player(Level level, float x, float y) {
         super(level, x, y, Sprite.PLAYER);
 
         //se till att man spawnar på marken när man skapar en spelare
@@ -35,20 +36,38 @@ public class Player extends Entity implements MouseListener{
 
     //bara temporÃ¤r kod fÃ¶r att testa kollision
     public void update() {
-        if(dy < 0)dy = 0;//don't even know (jo det gÃ¶r jag)
-        if(dy > 0)dy-=.2;//om man har hoppat ska man falla (?)
-        move(0, 1 - dy); //ramla alltid nedÃ¥t
-        if(in.getKeyStatus(KeyEvent.VK_A)){
+        
+    	if(!collision(0, 1))
+    	{
+    		//om man inte står på solid grund
+    		//tyngdaccelerationen blir 12 enheter/sekund
+    		//metoden kallas som sagt 60 gånger per sekund (värt att ha koll på)
+    		dy += 0.15;
+    		jumping = true;
+    	}else if(getKeyStatus(KeyEvent.VK_SPACE) && !jumping)dy = -4;
+    	
+    	move(0, (float)dy);
+    	
+    	if(collision(0, 1))
+		{
+    		jumping = false;
+    		dy = 0;
+		}
+    	
+  
+        if(getKeyStatus(KeyEvent.VK_A)){
         	dir = Direction.LEFT;
         	move(-1,  0);//flippa även karaktären
         }
-        if(in.getKeyStatus(KeyEvent.VK_D)){
+        if(getKeyStatus(KeyEvent.VK_D)){
         	dir = Direction.RIGHT;
         	move( 1,  0);
         }
         
-        
-        if(in.getKeyStatus(KeyEvent.VK_SPACE) && dy == 0)dy = 6;
+        if(getKeyStatus(KeyEvent.VK_ESCAPE)){
+        	GameStateManager.setCurrentState(GameStateManager.State.PAUSE);
+        	keys[KeyEvent.VK_ESCAPE] = false;
+        }
     }
 
     public void render(Screen screen) {
@@ -80,4 +99,23 @@ public class Player extends Entity implements MouseListener{
 	public void mouseReleased(MouseEvent e) { }
 	public void mouseEntered(MouseEvent e) { }
 	public void mouseExited(MouseEvent e) {	}
+	
+		private boolean getKeyStatus(int key)
+	{
+		return keys[key];
+	}
+	
+	public void keyTyped(KeyEvent e) {
+		if(Character.toLowerCase(e.getKeyChar()) == 'q')showInventory = !showInventory;
+	}
+
+	public void keyPressed(KeyEvent e) 
+	{
+		keys[e.getKeyCode()] = true;
+	}
+	
+	public void keyReleased(KeyEvent e)
+	{
+		keys[e.getKeyCode()] = false;
+	}
 }
