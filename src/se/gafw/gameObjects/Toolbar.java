@@ -61,7 +61,7 @@ public class Toolbar {
 			}
 		}
 		
-		screen.renderSprite(selectedStack, x + (currentStack * 20), y + 20, false);
+		screen.renderSprite(selectedStack, x + (currentStack * 20), y + 22, false);
 	}
 	
 	/**
