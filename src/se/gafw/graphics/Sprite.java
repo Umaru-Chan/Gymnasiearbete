@@ -7,6 +7,8 @@ public class Sprite {
 	public static final Sprite DIRT = new Sprite(SpriteSheet.TILES, 2, 0, 16);
 	public static final Sprite PLAYER = new Sprite(SpriteSheet.TILES, 0, 7, 32);
 	public static final Sprite INVENTORY = new Sprite(SpriteSheet.INVENTORY, 0, 0, 184, 64);
+	public static final Sprite TOOLBAR = new Sprite(SpriteSheet.INVENTORY, 0, 0, 184, 24);
+	public static final Sprite TOOLBAR_STACK = new Sprite(SpriteSheet.TILES, 0, 7, 24, 4);
 
 	/**
 	 * 
