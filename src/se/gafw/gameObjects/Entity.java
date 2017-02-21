@@ -22,10 +22,29 @@ public abstract class Entity {
 	}
 	
 	protected void move(float dx, float dy){
-		if(!collision((int)(dx), (int)(dy))){
-			x += dx;
-			y += dy;
+		//om det är 5 pixlar kvar till ett mål och man rör sig med 6 pixlar så kommer kollisionen kollas 6 pixlar frammåt, 
+		//fungerar bättre att bara röra sig 1 pixel i taget
+		if(dx > 1 || dy > 1)
+		{
+			if(dx > 0)
+			{
+				for(int  i = 0; i < dx; dx--)
+				{
+					move(specialAbs(dx), 0);
+				}
+			}
+			if(dy > 0)
+			{
+				for(int  i = 0; i < dy; dy--)
+				{
+					move(0, specialAbs(dy));
+				}
+			}			
 		}
+		if(!collision(dx, 0))//kolla båda leden var för sig
+			x += dx;
+		if(!collision(0, dy))
+			y += dy;
 	}
 
 	/**
