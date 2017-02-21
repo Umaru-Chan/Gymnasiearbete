@@ -101,9 +101,15 @@ public class Player extends Entity implements MouseListener{
 	        
 	        //Remove block
 	        if(e.getButton() == MouseEvent.BUTTON1 && !showInventory) {
-	        	//Dirt or grass tile
+	        	//Remove dirt or grass tile
 	        	if(level.getTile(x, y) == Tile.DIRT_TILE || level.getTile(x, y) == Tile.GRASS_TILE)
 	        		item = Item.DIRT;
+	        	//Remove stone tile
+	        	else if(level.getTile(x, y) == Tile.STONE_TILE)
+	        		item = Item.STONE;
+	        	//Remove ruby tile
+	        	else if(level.getTile(x, y) == Tile.RUBY_TILE)
+	        		item = Item.RUBY;
 	        	else item = null;
 	            
 	        	level.removeBlock(x, y);
@@ -117,6 +123,12 @@ public class Player extends Entity implements MouseListener{
 	        		//Add dirt block
 	        		if(toolbar.stack[toolbar.currentStack * inventory.stack] == Item.DIRT) 
 	        			level.addBlock(x, y, Tile.DIRT_COLOR);
+	        		//Add stone block
+	        		else if(toolbar.stack[toolbar.currentStack * inventory.stack] == Item.STONE)
+	        			level.addBlock(x, y, Tile.STONE_COLOR);
+	        		//Add ruby block
+	        		else if(toolbar.stack[toolbar.currentStack * inventory.stack] == Item.RUBY)
+	        			level.addBlock(x, y, Tile.RUBY_COLOR);
 	        	
 	        	for(int i = toolbar.currentStack * inventory.stack + inventory.stack - 1; i >= toolbar.currentStack * inventory.stack; i--) {
 	        		if(toolbar.stack[i] != null) {
