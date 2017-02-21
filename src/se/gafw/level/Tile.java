@@ -14,6 +14,12 @@ public abstract class Tile {
 	public static final Tile DIRT_TILE = new CollidableTile(Sprite.DIRT);
 	public static final int DIRT_COLOR = 0xaa88aa;
 	
+	public static final Tile STONE_TILE = new CollidableTile(Sprite.STONE);
+	public static final int STONE_COLOR = 0xaaaaaa;
+	
+	public static final Tile RUBY_TILE = new CollidableTile(Sprite.RUBY);
+	public static final int RUBY_COLOR = 0xff0000;
+	
 	
 	public final Sprite sprite;
 	
