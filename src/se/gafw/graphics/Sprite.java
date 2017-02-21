@@ -7,6 +7,15 @@ public class Sprite {
 	public static final Sprite DIRT = new Sprite(SpriteSheet.TILES, 2, 0, 16);
 	public static final Sprite PLAYER = new Sprite(SpriteSheet.TILES, 0, 7, 32);
 	public static final Sprite INVENTORY = new Sprite(SpriteSheet.INVENTORY, 0, 0, 184, 64);
+
+	/**
+	 * 
+	 */
+	public static final Sprite STONE = new Sprite(16, 16, 0xaaaaaa);
+	public static final Sprite RUBY = new Sprite(16, 16, 0xaa0000);
+	/**
+	 * 
+	 */
 	
 	public int[] pixels;
 	public int width, height;
