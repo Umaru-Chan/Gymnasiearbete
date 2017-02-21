@@ -14,8 +14,6 @@ import se.gafw.graphics.SpriteSheet;
 
 public class Level {
 
-	public static final Level TEST = new Level(new Random(), 256, 256, new int[]{0xffffffff, 0xff000000});
-	
 	private int width, height;
 	//private Tile[] tiles;
 	private int[] tileColors;
@@ -64,9 +62,10 @@ public class Level {
         }
 
         //generera ngra random värden för speciella stenar
+        //TODO längre ner = mer speciella stenar
         for(int x = 0; x < width; x++)
         	for(int y = 0; y < depth; y++)
-        		specialStones[x + y * width] = (random.nextInt(40) == 0) ? 1 : 0;
+        		specialStones[x + y * width] = (random.nextInt(100 - y / 5) == 0) ? 1 : 0;
         
         //lägg ut all dirt och stone (och void)
         for(int x = 1; x < width - 1; x++)
@@ -108,6 +107,11 @@ public class Level {
         				if(random.nextBoolean()) tileColors[x + (y + 1) * width] = Tile.RUBY_COLOR;
         				if(random.nextBoolean()) tileColors[(x - 1) + y * width] = Tile.RUBY_COLOR;
         				if(random.nextBoolean()) tileColors[(x + 1) + y * width] = Tile.RUBY_COLOR;
+        				//lägg till MEEER random runtom
+        				if(random.nextBoolean() && random.nextBoolean()) tileColors[(x - 1) + (y - 1) * width] = Tile.RUBY_COLOR;
+        				if(random.nextBoolean() && random.nextBoolean()) tileColors[(x - 1) + (y + 1) * width] = Tile.RUBY_COLOR;
+        				if(random.nextBoolean() && random.nextBoolean()) tileColors[(x + 1) + (y - 1) * width] = Tile.RUBY_COLOR;
+        				if(random.nextBoolean() && random.nextBoolean()) tileColors[(x + 1) + (y + 1) * width] = Tile.RUBY_COLOR;
     				}
         		}
         	}
