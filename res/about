@@ -1,0 +1,25 @@
+Detta är ett gymnasiearbete utfört ht 2016 - vt 2017 utav Alexander Norozkhani, Mathias Dahlman och Hampus Eurén.
+Spelet är programmerat i Java-se 8 och inga extra bibliotek används för hjälp med rendering/mattematik, detta
+leder till att spelet inte körs lika snabbt som det potentiellt skulle kunna göra. 
+
+Så spelar du:
+    Du styr karaktären med A (vänster) och D (höger), man kan hoppa med mellanslag och med hjälp av musen
+    kan man ta bort block (vänsterklick) och lägga till block (högerklick).
+
+Renderingen:
+    Denna text renderas rent av med hjälp av Javas egna funktioner, men spelet i sig renderas huvudsakligen igenom 
+    att en array med integers där varje tal motsvarar en pixel behandlas på olika sätt.
+    2D bilder laddas in i minnet där information om varje pixels färg sparas och sedan kopieras up i huvud-vektorn
+    så många gånger som det behövs. Detta sker så snabbt som datorn skulle kunna rendera.
+	
+Uppdateringen:
+    Uppdateringen av rörelse i spelet sker i genomsnitt 60 gånger per sekund. Om spelet skulle frysa en
+    sekund så blir det istället 120 uppdateringar nästa. Detta är för att spelarens rörelser inte ska
+    bli påvärkade av sega datorer jämnt emot snabba. Om man uppdaterar rörelse i renderings metoden 
+    (kallas så snabbt som datorn kan) så skulle karaktären röra sig snabbare på en bättre datorn och segare på
+    en segare dator. Spelets "huvudloop" prioriterar uppdateringar före rendering om det behövs, det är alltså
+    möjligt att få 60 uppdateringar per sekund och 1 renderings-cykel.
+    
+< klicka ESCAPE för att ta dig tillbaks till huvudmenyn >
+	
+		
