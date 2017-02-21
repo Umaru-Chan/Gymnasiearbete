@@ -1,5 +1,6 @@
 package se.gafw.gameObjects;
 
+
 import se.gafw.Gyarb;
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
@@ -13,11 +14,21 @@ public class Inventory {
 	
 	public Item[] slots = new Item[size * stack]; 
 	private Sprite sprite;
-		
+	
+	private int x, y;
+				
+	/**
+	 * Class constructor.
+	 * @param sprite
+	 */
 	public Inventory(Sprite sprite) {
 		this.sprite = sprite;
 	}
 	
+	/**
+	 * 
+	 * @param item
+	 */
 	public void addItem(Item item) {
 		int emptySlot = findSlot(item);
 		if(emptySlot >= 0) {
@@ -27,14 +38,21 @@ public class Inventory {
 			System.out.println("Inventory is full");
 	}
 	
+	/**
+	 * 
+	 * @param index
+	 */
 	public void removeItem(int index) {
-		for(int i = index; i < index + stack; i++)
-			slots[i] = null;
+		slots[index] = null;
 	}
 	
+	/**
+	 * 
+	 * @param screen
+	 */
 	public void render(Screen screen) {
-		int x = Gyarb.WIDTH / 2 - sprite.width / 2;   //x-coordinate for inventory
-		int y = Gyarb.HEIGHT / 2 - sprite.height / 2; //y-coordinate for inventory
+		x = Gyarb.WIDTH / 2 - sprite.width / 2;   //x-coordinate for inventory
+		y = Gyarb.HEIGHT / 2 - sprite.height / 2; //y-coordinate for inventory
 		
 		//Render inventory
 		screen.renderSprite(sprite, x, y, false);
@@ -47,11 +65,16 @@ public class Inventory {
 		}	
 	}
 	
+	/**
+	 * 
+	 * @param item
+	 * @return
+	 */
 	private int findSlot(Item item) {
 		for(int i = 0; i < slots.length; i++) {
 			if(slots[i] == null)
 				return i;
-			else if(slots[i].getSprite() == item.getSprite() && slots[i + stack - 1] == null)
+			else if(slots[i].getSprite() == item.getSprite() && slots[i + stack - i -1] == null)
 				continue;
 			else if(slots[i] != null && slots[i].getSprite() != item.getSprite())
 				i = i + stack - 1;
@@ -59,7 +82,20 @@ public class Inventory {
 		return -1;
 	}
 	
-	public Sprite getSprite() {
-		return sprite;
+	/**
+	 * Return horizontal x-coordinate for the inventory.
+	 * @return x, an integer for the horizontal position.
+	 */
+	public int getX() {
+		return x;
+	}
+	
+	/**
+	 * Return vertical y-coordinate for the inventory.
+	 * @return y, an integer for the vertical position.
+	 */
+	public int getY() {
+		return y;
 	}
 }
+
