@@ -44,25 +44,45 @@ public class Level {
         this.height = height;
     }
 
-    public static Level randomLevel(int amplitude, int width, int depth)
+    	public static Level randomLevel(int amplitude, int width, int depth)
     {
         Random random = new Random();
         
-        int[] h = new int[width];
+        //för höjden på jordnivån och stennivån
+        int[] dirtTop = new int[width], stoneTop = new int[width];
+        int[] specialStones = new int[width * depth];
+        
         int[] tileColors = new int[width * depth];
+        
         for(int i = 0; i < width; i++)
         {
-            h[i] = depth / 2 - random.nextInt(amplitude);
+            dirtTop[i] = depth / 2 - random.nextInt(amplitude);
+            stoneTop[i] = depth / 2 - random.nextInt(amplitude);
         }
 
+        //generera ngra random värden för speciella stenar
         for(int x = 0; x < width; x++)
+        	for(int y = 0; y < depth; y++)
+        		specialStones[x + y * width] = (random.nextInt(40) == 0) ? 1 : 0;
+        
+        for(int x = 1; x < width - 1; x++)
         {
             for(int y = depth / 3; y < depth; y++)
             {
-                if(y /*+ depth*/ >= h[x])
-                {
-                	
-                    tileColors[x + y * width] = Tile.DIRT_COLOR;
+            	//för att världen inte ska se ut som en spikmatta
+            	int avgDirt = (dirtTop[x] + dirtTop[x-1] + dirtTop[x+1]) / 3;
+            	int avgStone = (stoneTop[x] + stoneTop[x-1] + stoneTop[x+1]) / 3 + 5;
+            	
+                if(y /*+ depth*/ >= avgDirt)
+                {      	
+                	if(y >= avgStone)
+            		{
+                		tileColors[x + y * width] = Tile.STONE_COLOR;
+                		//under stenlagret, om randomsaken, lägg till ett coolt block
+                		if(specialStones[x + y * width] == 1)tileColors[x + y * width] = Tile.RUBY_COLOR;
+            		
+            		}
+                	else tileColors[x + y * width] = Tile.DIRT_COLOR;
                 }
                 else tileColors[x + y * width] = Tile.VOID_COLOR;
             }
