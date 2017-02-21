@@ -44,16 +44,19 @@ public class Level {
         this.height = height;
     }
 
-    	public static Level randomLevel(int amplitude, int width, int depth)
+   public static Level randomLevel(int amplitude, int width, int depth)
     {
         Random random = new Random();
         
         //för höjden på jordnivån och stennivån
         int[] dirtTop = new int[width], stoneTop = new int[width];
+        //för mineraler
         int[] specialStones = new int[width * depth];
         
+        //kommer att spara alla tiles
         int[] tileColors = new int[width * depth];
         
+        //generera ngra random värden för höjder
         for(int i = 0; i < width; i++)
         {
             dirtTop[i] = depth / 2 - random.nextInt(amplitude);
@@ -65,6 +68,7 @@ public class Level {
         	for(int y = 0; y < depth; y++)
         		specialStones[x + y * width] = (random.nextInt(40) == 0) ? 1 : 0;
         
+        //lägg ut all dirt och stone (och void)
         for(int x = 1; x < width - 1; x++)
         {
             for(int y = depth / 3; y < depth; y++)
@@ -78,8 +82,6 @@ public class Level {
                 	if(y >= avgStone)
             		{
                 		tileColors[x + y * width] = Tile.STONE_COLOR;
-                		//under stenlagret, om randomsaken, lägg till ett coolt block
-                		if(specialStones[x + y * width] == 1)tileColors[x + y * width] = Tile.RUBY_COLOR;
             		
             		}
                 	else tileColors[x + y * width] = Tile.DIRT_COLOR;
@@ -88,13 +90,35 @@ public class Level {
             }
         }
         
+        //lägg ut mineraler
+        for(int x = 1; x < width - 1; x++)
+        {
+        	for(int y = depth / 3; y < depth - 1; y++)
+        	{
+        		int avgStone = (stoneTop[x] + stoneTop[x-1] + stoneTop[x+1]) / 3 + 8;
+        		
+        		if(y >= avgStone)
+        		{
+        			//under stenlagret, om randomsaken, lägg till ett coolt block
+        			if(specialStones[x + y * width] == 1)
+    				{
+        				tileColors[x + y * width] = Tile.RUBY_COLOR;
+        				//lägg lite random ut fler brevid tilen
+        				if(random.nextBoolean()) tileColors[x + (y - 1) * width] = Tile.RUBY_COLOR;
+        				if(random.nextBoolean()) tileColors[x + (y + 1) * width] = Tile.RUBY_COLOR;
+        				if(random.nextBoolean()) tileColors[(x - 1) + y * width] = Tile.RUBY_COLOR;
+        				if(random.nextBoolean()) tileColors[(x + 1) + y * width] = Tile.RUBY_COLOR;
+    				}
+        		}
+        	}
+        }
+        
         //temp
         for(int i = 0; i < tileColors.length; i++)
         	if(tileColors[i] == 0)tileColors[i] = Tile.VOID_COLOR;
         
         return new Level(tileColors, width, depth);
     }
-
 	/**
 	 * Generera en slumpmÃ¤ssig uppsÃ¤ttning tiles.
 	 * @param random
