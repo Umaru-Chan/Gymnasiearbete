@@ -21,7 +21,7 @@ public class InGame extends GameState{
 	protected InGame(Gyarb g) {
 		pixels = ((DataBufferInt) 
 				(image = new BufferedImage(Gyarb.WIDTH, Gyarb.HEIGHT, BufferedImage.TYPE_INT_RGB)).getRaster().getDataBuffer()).getData();
-		currentLevel = Level.randomLevel(5, 150, 100);
+		currentLevel = Level.randomLevel(7, 150, 100);
 		player = new Player(currentLevel, 75 << 4, 35 << 4, g); //multiplicerar med 16 för att få positionen i block och inte pixlar
 		g.addMouseListener(player);
 	}
