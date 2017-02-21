@@ -173,4 +173,20 @@ public class FileHandler {
 		}catch(IOException e){System.err.println(":(  "+e.getMessage());}
 		return result;
 	}
+	
+	/**
+	 * 
+	 * @param path
+	 * @return
+	 */
+	public static String readText(String path){
+		String result = "";
+		try{
+			BufferedReader reader = new BufferedReader(new FileReader(new File(path)));
+			String line = null;
+			while((line = reader.readLine()) != null)result += line+"\n";
+			reader.close();
+		}catch(IOException e){System.err.println(":(  "+e.getMessage());}
+		return result;
+	}
 }
