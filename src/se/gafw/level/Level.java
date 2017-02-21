@@ -159,6 +159,8 @@ public class Level {
 		case Tile.VOID_COLOR:	return Tile.VOID_TILE;
 		case Tile.GRASS_COLOR:	return Tile.GRASS_TILE;
 		case Tile.DIRT_COLOR:	return Tile.DIRT_TILE;
+		case Tile.STONE_COLOR:	return Tile.STONE_TILE;
+		case Tile.RUBY_COLOR: 	return Tile.RUBY_TILE;
 		}
 		
 		return Tile.VOID_TILE;
