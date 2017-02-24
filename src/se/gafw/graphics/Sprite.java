@@ -13,7 +13,7 @@ public class Sprite {
 	/**
 	 * 
 	 */
-	public static final Sprite STONE = new Sprite(16, 16, 0xaaaaaa);
+	public static final Sprite STONE = new Sprite(SpriteSheet.TILES, 3, 0, 16);
 	public static final Sprite RUBY = new Sprite(16, 16, 0xaa0000);
 	/**
 	 * 
