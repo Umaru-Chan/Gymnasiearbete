@@ -10,42 +10,6 @@ public class Toolbar {
 	private Sprite selectedStack = Sprite.TOOLBAR_STACK;
 
 	private int stackSize = 64;
-	private int x, y;
-
-	public int stacks = 9;
-	public int currentStack = 0;
-	
-	public Item[] stack = new Item[stacks * stackSize];
-	
-	/**
-	 * 
-	 * @param sprite
-	 */
-	public Toolbar(Sprite sprite) {
-		this.sprite = sprite;
-	}
-	
-	/**
-	 * 
-	 * @param item
-	 */
-	public void addItem(Item item) {
-		int findSlot = findStack(item);
-		if(findSlot >= 0)
-			stack[findSlot] = item;
-		else if (findSlot < 0)
-package se.gafw.gameObjects;
-
-import se.gafw.Gyarb;
-import se.gafw.graphics.Screen;
-import se.gafw.graphics.Sprite;
-
-public class Toolbar {
-
-	private Sprite sprite;
-	private Sprite selectedStack = Sprite.TOOLBAR_STACK;
-
-	private int stackSize = 64;
 	private int stackAmount = 9;
 	private int currentStack = 0;
 	private int x, y;
@@ -172,4 +136,6 @@ public class Toolbar {
 	}
 	
 }
+
+
 
