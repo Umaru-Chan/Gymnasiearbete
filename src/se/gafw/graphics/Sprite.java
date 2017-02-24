@@ -5,10 +5,10 @@ public class Sprite {
 	public static final Sprite VOID = new Sprite(SpriteSheet.TILES, 0, 0, 16);
 	public static final Sprite GRASS = new Sprite(SpriteSheet.TILES, 1, 0, 16);
 	public static final Sprite DIRT = new Sprite(SpriteSheet.TILES, 2, 0, 16);
-	public static final Sprite PLAYER = new Sprite(SpriteSheet.TILES, 0, 7, 32);
+	public static final Sprite PLAYER = new Sprite(SpriteSheet.TILES, 3, 7, 32);
 	public static final Sprite INVENTORY = new Sprite(SpriteSheet.INVENTORY, 0, 0, 184, 64);
 	public static final Sprite TOOLBAR = new Sprite(SpriteSheet.INVENTORY, 0, 0, 184, 24);
-	public static final Sprite TOOLBAR_STACK = new Sprite(SpriteSheet.TILES, 0, 15, 24, 2);
+	public static final Sprite TOOLBAR_STACK = new Sprite(SpriteSheet.TILES, 0, 16, 24, 2);
 
 	/**
 	 * 
