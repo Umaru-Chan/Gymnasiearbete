@@ -89,7 +89,7 @@ public class Player extends Entity implements MouseListener{
 
 
 	public void mousePressed(MouseEvent e) {
-		//Remove and add blocks near the player
+		//REMOVE AND ADD BLOCKS NEAR THE PLAYER
     	int minX = Gyarb.SCALE * (Gyarb.WIDTH / 2 - 100);
     	int maxX = Gyarb.SCALE * (Gyarb.WIDTH / 2 + 100);
     	int minY = Gyarb.SCALE * (Gyarb.HEIGHT / 2 - 100);
@@ -118,20 +118,21 @@ public class Player extends Entity implements MouseListener{
 	        		inventory.addItem(item);
 	        }
 	        //Add block
-	        if(e.getButton() == MouseEvent.BUTTON3 && !showInventory) {
-	        	if(toolbar.stack[toolbar.currentStack * inventory.stack] != null) 
+	        if(e.getButton() == MouseEvent.BUTTON3 && !showInventory && !level.getTile(x, y).solid()) {
+	        	if(toolbar.getStack()[toolbar.getCurrentStack() * toolbar.getStackSize()] != null) 
 	        		//Add dirt block
-	        		if(toolbar.stack[toolbar.currentStack * inventory.stack] == Item.DIRT) 
+	        		if(toolbar.getStack()[toolbar.getCurrentStack() * toolbar.getStackSize()] == Item.DIRT) 
 	        			level.addBlock(x, y, Tile.DIRT_COLOR);
 	        		//Add stone block
-	        		else if(toolbar.stack[toolbar.currentStack * inventory.stack] == Item.STONE)
+	        		else if(toolbar.getStack()[toolbar.getCurrentStack() * toolbar.getStackSize()] == Item.STONE)
 	        			level.addBlock(x, y, Tile.STONE_COLOR);
 	        		//Add ruby block
-	        		else if(toolbar.stack[toolbar.currentStack * inventory.stack] == Item.RUBY)
+	        		else if(toolbar.getStack()[toolbar.getCurrentStack() * toolbar.getStackSize()] == Item.RUBY)
 	        			level.addBlock(x, y, Tile.RUBY_COLOR);
 	        	
-	        	for(int i = toolbar.currentStack * inventory.stack + inventory.stack - 1; i >= toolbar.currentStack * inventory.stack; i--) {
-	        		if(toolbar.stack[i] != null) {
+	        	for(int i = toolbar.getCurrentStack() * toolbar.getStackSize() + toolbar.getStackSize() - 1; 
+	        			i >= toolbar.getCurrentStack() * toolbar.getStackSize(); i--) {
+	        		if(toolbar.getStack()[i] != null) {
 	        			toolbar.removeItem(i);
 	        			break;
 	        		}
@@ -139,37 +140,37 @@ public class Player extends Entity implements MouseListener{
 	        }
     	}
     	
-        //Inventory
+        //INVENTORY
         if(showInventory) {
             int invX = Gyarb.SCALE * (inventory.getX() + 4);	 //X-coordinate for inventory
             int invY = Gyarb.SCALE * (inventory.getY() + 4); 	 //Y-coordinate for inventory
             int invCol = (e.getX() - invX) / (20 * Gyarb.SCALE); //Column
             int invRow = (e.getY() - invY) / (20 * Gyarb.SCALE); //Row
 
-          //Move stack from inventory to toolbar
-            if(invCol < inventory.column && e.getX() >= invX && invRow < inventory.row && e.getY() >= invY) {
-                int index = inventory.stack * (invRow * inventory.column + invCol); 
-               	for(int i = index; i < index + inventory.stack; i++) { //Add item to toolbar
-               		if(inventory.slots[i] != null) toolbar.addItem(inventory.slots[i]);
+            //Move stack from inventory to toolbar
+            if(invCol < inventory.getColumn() && e.getX() >= invX && invRow < inventory.getRow() && e.getY() >= invY) {
+                int index = inventory.getStackSize() * (invRow * inventory.getColumn() + invCol); 
+               	for(int i = index; i < index + inventory.getStackSize(); i++) { //Add item to toolbar
+               		if(inventory.getSlots()[i] != null) toolbar.addItem(inventory.getSlots()[i]);
                	}
-               	for(int i = index + inventory.stack - 1; i >= index; i--) { //Remove item in inventory
+               	for(int i = index + inventory.getStackSize() - 1; i >= index; i--) { //Remove item in inventory
                		inventory.removeItem(i);
                	}
             }    
         }
         
-        //Toolbar
+        //TOOLBAR
         int toolbarX = Gyarb.SCALE * (toolbar.getX() + 4); //X-coordinate for toolbar
         int toolbarY = Gyarb.SCALE * (toolbar.getY() + 4); //Y-coordinate for toolbar
         int toolbarCol = (e.getX() - toolbarX) / (20 * Gyarb.SCALE); //Column
         
         //Move stack from toolbar to inventory
-        if(toolbarCol < toolbar.stacks && e.getX() >= toolbarX && e.getY() >= toolbarY) {
-        	int index = toolbarCol * inventory.stack;
-        	for(int i = index; i < index + inventory.stack; i++) { //Add item to inventory
-        		if(toolbar.stack[i] != null) inventory.addItem(toolbar.stack[i]);
+        if(toolbarCol < toolbar.getStackAmount() && e.getX() >= toolbarX && e.getY() >= toolbarY) {
+        	int index = toolbarCol * toolbar.getStackSize();
+        	for(int i = index; i < index + toolbar.getStackSize(); i++) { //Add item to inventory
+        		if(toolbar.getStack()[i] != null) inventory.addItem(toolbar.getStack()[i]);
         	}
-        	for(int i = index + inventory.stack - 1; i >= index; i--) { //Remove item in toolbar
+        	for(int i = index + toolbar.getStackSize() - 1; i >= index; i--) { //Remove item in toolbar
         		toolbar.removeItem(i);
         	}
         }
@@ -186,15 +187,15 @@ public class Player extends Entity implements MouseListener{
 	public void keyTyped(KeyEvent e) {
 		if(Character.toLowerCase(e.getKeyChar()) == 'q')showInventory = !showInventory;
 		
-		if(Character.toLowerCase(e.getKeyChar()) == '1')toolbar.currentStack = 0;
-		if(Character.toLowerCase(e.getKeyChar()) == '2')toolbar.currentStack = 1;
-		if(Character.toLowerCase(e.getKeyChar()) == '3')toolbar.currentStack = 2;
-		if(Character.toLowerCase(e.getKeyChar()) == '4')toolbar.currentStack = 3;
-		if(Character.toLowerCase(e.getKeyChar()) == '5')toolbar.currentStack = 4;
-		if(Character.toLowerCase(e.getKeyChar()) == '6')toolbar.currentStack = 5;
-		if(Character.toLowerCase(e.getKeyChar()) == '7')toolbar.currentStack = 6;
-		if(Character.toLowerCase(e.getKeyChar()) == '8')toolbar.currentStack = 7;
-		if(Character.toLowerCase(e.getKeyChar()) == '9')toolbar.currentStack = 8;
+		if(Character.toLowerCase(e.getKeyChar()) == '1')toolbar.setCurrentStack(0);
+		if(Character.toLowerCase(e.getKeyChar()) == '2')toolbar.setCurrentStack(1);
+		if(Character.toLowerCase(e.getKeyChar()) == '3')toolbar.setCurrentStack(2);
+		if(Character.toLowerCase(e.getKeyChar()) == '4')toolbar.setCurrentStack(3);
+		if(Character.toLowerCase(e.getKeyChar()) == '5')toolbar.setCurrentStack(4);
+		if(Character.toLowerCase(e.getKeyChar()) == '6')toolbar.setCurrentStack(5);
+		if(Character.toLowerCase(e.getKeyChar()) == '7')toolbar.setCurrentStack(6);
+		if(Character.toLowerCase(e.getKeyChar()) == '8')toolbar.setCurrentStack(7);
+		if(Character.toLowerCase(e.getKeyChar()) == '9')toolbar.setCurrentStack(8);
 	}
 	
 	public void resetKeys()
