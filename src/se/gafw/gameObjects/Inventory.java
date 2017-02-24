@@ -1,21 +1,21 @@
 package se.gafw.gameObjects;
 
-
 import se.gafw.Gyarb;
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
 
 public class Inventory {
 	
-	public int row = 3;
-	public int column = 9;
-	private int size = row * column;
-	public int stack = 64;
-	
-	public Item[] slots = new Item[size * stack]; 
 	private Sprite sprite;
 	
+	private int stackSize = 64;
+	private int row = 3;
+	private int column = 9;
+	private int size = row * column;
 	private int x, y;
+	
+	private Item[] slots = new Item[size * stackSize]; 
+	
 				
 	/**
 	 * Class constructor.
@@ -51,16 +51,16 @@ public class Inventory {
 	 * @param screen
 	 */
 	public void render(Screen screen) {
-		x = Gyarb.WIDTH / 2 - sprite.width / 2;   //x-coordinate for inventory
-		y = Gyarb.HEIGHT / 2 - sprite.height / 2; //y-coordinate for inventory
+		x = Gyarb.WIDTH / 2 - sprite.getWidth() / 2;   //x-coordinate for inventory
+		y = Gyarb.HEIGHT / 2 - sprite.getHeight() / 2; //y-coordinate for inventory
 		
 		//Render inventory
 		screen.renderSprite(sprite, x, y, false);
 		
 		//Render items
 		for(int i = 0; i < size; i++) {
-			if(slots[i*stack] != null) {
-				slots[i * stack].render(screen, x + 4 + ((i % column) * 20), y + 4 + (i / column) * 20);
+			if(slots[i * stackSize] != null) {
+				slots[i * stackSize].render(screen, x + 4 + ((i % column) * 20), y + 4 + (i / column) * 20);
 			}
 		}	
 	}
@@ -74,10 +74,10 @@ public class Inventory {
 		for(int i = 0; i < slots.length; i++) {
 			if(slots[i] == null)
 				return i;
-			else if(slots[i].getSprite() == item.getSprite() && slots[i + stack - i -1] == null)
+			else if(slots[i].getSprite() == item.getSprite() && slots[i + stackSize - i -1] == null)
 				continue;
 			else if(slots[i] != null && slots[i].getSprite() != item.getSprite())
-				i = i + stack - 1;
+				i = i + stackSize - 1;
 		}
 		return -1;
 	}
@@ -97,5 +97,38 @@ public class Inventory {
 	public int getY() {
 		return y;
 	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getRow() {
+		return row;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getColumn() {
+		return column;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public int getStackSize() {
+		return stackSize;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Item[] getSlots() {
+		return slots;
+	}
 }
+
 
