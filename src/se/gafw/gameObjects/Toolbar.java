@@ -34,6 +34,41 @@ public class Toolbar {
 		if(findSlot >= 0)
 			stack[findSlot] = item;
 		else if (findSlot < 0)
+package se.gafw.gameObjects;
+
+import se.gafw.Gyarb;
+import se.gafw.graphics.Screen;
+import se.gafw.graphics.Sprite;
+
+public class Toolbar {
+
+	private Sprite sprite;
+	private Sprite selectedStack = Sprite.TOOLBAR_STACK;
+
+	private int stackSize = 64;
+	private int stackAmount = 9;
+	private int currentStack = 0;
+	private int x, y;
+
+	private Item[] stack = new Item[stackAmount * stackSize];
+	
+	/**
+	 * 
+	 * @param sprite
+	 */
+	public Toolbar(Sprite sprite) {
+		this.sprite = sprite;
+	}
+	
+	/**
+	 * 
+	 * @param item
+	 */
+	public void addItem(Item item) {
+		int findSlot = findStack(item);
+		if(findSlot >= 0)
+			stack[findSlot] = item;
+		else if (findSlot < 0)
 			System.out.println("Out of space in toolbar");
 	}
 	
@@ -50,8 +85,8 @@ public class Toolbar {
 	 * @param screen
 	 */
 	public void render(Screen screen) {
-		x = Gyarb.WIDTH / 2 - sprite.width / 2;   
-		y = Gyarb.HEIGHT - sprite.height - 10;
+		x = Gyarb.WIDTH / 2 - sprite.getWidth() / 2;   
+		y = Gyarb.HEIGHT - sprite.getHeight() - 10;
 		
 		screen.renderSprite(sprite, x, y, false);
 		
@@ -60,7 +95,6 @@ public class Toolbar {
 				stack[i * stackSize].render(screen, x + 4 + ((i % 9) * 20), y + 4);
 			}
 		}
-		
 		screen.renderSprite(selectedStack, x + (currentStack * 20), y + 22, false);
 	}
 	
@@ -96,4 +130,46 @@ public class Toolbar {
 	public int getY() {
 		return y;
 	}
+	
+	/**
+	 * Return the size of a stack.
+	 * @return
+	 */
+	public int getStackSize() {
+		return stackSize;
+	}
+	
+	/**
+	 * Return the amount of stacks the toolbar can store. 
+	 * @return
+	 */
+	public int getStackAmount() {
+		return stackAmount;
+	}
+	
+	/**
+	 * Return the selected stack
+	 * @return
+	 */
+	public int getCurrentStack() {
+		return currentStack;
+	}
+	
+	/**
+	 * Set the current stack
+	 * @param i
+	 */
+	public void setCurrentStack(int i) {
+		currentStack = i;
+	}
+	
+	/**
+	 * 
+	 * @return
+	 */
+	public Item[] getStack() {
+		return stack;
+	}
+	
 }
+
