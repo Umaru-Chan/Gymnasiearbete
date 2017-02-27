@@ -30,6 +30,11 @@ public class Screen {
 			pixels[i] = clearColor;
 	}
 	
+	public int[] getCurrentBuffer()
+	{
+		return pixels;
+	}
+	
 	/**
 	 * renders Sprite sprite at x, y.
 	 * clipped is not yet implemented.
@@ -49,6 +54,7 @@ public class Screen {
 				int up = u + x;
 				if(up < 0 || up >= width)continue;		
 				int col = sprite.pixels[u + v * sprite.width];
+				
 				if(col == 0xffff00ff || col == 0xff7f007f)continue;
 				pixels[up + vp * width] = col;
 			}

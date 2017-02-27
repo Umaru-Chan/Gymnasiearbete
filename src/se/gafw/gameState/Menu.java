@@ -21,13 +21,6 @@ public class Menu extends GameState{
 	private BufferedImage bg;
 	private Font font = new Font(/*"Purisa"*/"Georgia", 0, 70);
 	
-	/*
-	 * finns ingen poäng med att rendera om inget har ändrats,
-	 * shouldRender blir true när något (potentiellt) har ändrats (en knapptryckning).
-	 */
-	private boolean shouldRender = true;
-	
-	
 	protected Menu() {
 		loadBG("res/graphics/menuBG.png");
 	}
@@ -45,7 +38,6 @@ public class Menu extends GameState{
 	
 	public void enter()
 	{
-		shouldRender = true;
 		selected = 0;
 	}
 	
@@ -55,7 +47,7 @@ public class Menu extends GameState{
 	}
 	
 	public void render(Screen screen, Graphics2D g2d) {
-		if(!shouldRender)return;
+
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setFont(font);
 		g2d.drawImage(bg, 0, 0, Gyarb.WIDTH * Gyarb.SCALE, Gyarb.WIDTH * Gyarb.SCALE, null);
@@ -69,7 +61,6 @@ public class Menu extends GameState{
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 		
 		
-		shouldRender = false;
 	}
 
 	public void update() {
@@ -83,7 +74,7 @@ public class Menu extends GameState{
 
 	public void keyPressed(KeyEvent e)
 	{
-		shouldRender = true;
+		
 		if(e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP)selected += buttons.length - 1;
 		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN)selected ++;
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)

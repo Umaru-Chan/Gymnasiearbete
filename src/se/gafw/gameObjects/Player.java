@@ -1,24 +1,30 @@
 package se.gafw.gameObjects;
 
+import java.awt.Graphics2D;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
 import se.gafw.Gyarb;
+import se.gafw.gameState.GameStateManager;
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
 import se.gafw.level.Level;
+import se.gafw.level.Tile;
 
 public class Player extends Entity implements MouseListener{
 
     private float dy = 0;
     private Direction dir = null;
-    private boolean jumping = false, showInventory = false;
+    private boolean jumping = false, showInventory = false, walking = false;
     private boolean[] keys = new boolean[2550];
     
     private Inventory inventory = new Inventory(Sprite.INVENTORY);
     private Toolbar toolbar = new Toolbar(Sprite.TOOLBAR);
     private Item item;
+    
+    private Sprite[] walkingSprites = new Sprite[2];
+    private int timer = 0, currentSprite = 0;//fˆr att animera karakt‰ren
 	
     enum Direction{
     	RIGHT,
@@ -31,10 +37,16 @@ public class Player extends Entity implements MouseListener{
         //se till att man spawnar p√• marken n√§r man skapar en spelare
     	while(!collision(0, 1))
     		move(0, 1);        
+    	
+    	walkingSprites[0] = Sprite.PLAYER_WALKING_1;
+    	walkingSprites[1] = Sprite.PLAYER_WALKING_2;
     }
 
     //bara tempor√É¬§r kod f√É¬∂r att testa kollision
     public void update() {
+        //anta alltid att spelaren inte rˆr sig
+    	walking = false;
+        timer ++;
         
     	if(!collision(0, 1))
     	{
@@ -43,12 +55,14 @@ public class Player extends Entity implements MouseListener{
     		//metoden kallas som sagt 60 g√•nger per sekund (v√§rt att ha koll p√•)
     		dy += 0.15;
     		jumping = true;
+    		sprite = Sprite.PLAYER_JUMPING;
     	}else if(getKeyStatus(KeyEvent.VK_SPACE) && !jumping && !showInventory)dy = -4;
     	
     	move(0, (float)dy);
     	
     	if(collision(0, 1))
 		{
+    		sprite = Sprite.PLAYER;
     		jumping = false;
     		dy = 0;
 		}
@@ -57,19 +71,30 @@ public class Player extends Entity implements MouseListener{
         if(getKeyStatus(KeyEvent.VK_A) && !showInventory){
         	dir = Direction.LEFT;
         	move(-1,  0);//flippa √§ven karakt√§ren
+        	walking = true;
         }
         if(getKeyStatus(KeyEvent.VK_D) && !showInventory){
         	dir = Direction.RIGHT;
         	move( 1,  0);
+        	walking = true;
         }
         
         if(getKeyStatus(KeyEvent.VK_ESCAPE)){
         	GameStateManager.setCurrentState(GameStateManager.State.PAUSE);
         	keys[KeyEvent.VK_ESCAPE] = false;
         }
+        
+        if(walking && !jumping)
+        {
+        	if(timer % 20 == 0)currentSprite++;//TODO teak timing
+        	sprite = walkingSprites[currentSprite % walkingSprites.length];
+        	//fˆr att fˆrhindra att spelet krashar om timer blir mer ‰n Integer.MAX_VALUE 
+        	//(detta skulle kr‰va att spelet kˆrdes ett par Âr non stop sÂ ganska onˆdig kod)
+        	if(timer > 2.14*1e9)timer = 0;
+        }
     }
 
-    public void render(Screen screen) {
+    public void render(Screen screen, Graphics2D g2d) {
         screen.renderSprite(sprite, Gyarb.WIDTH / 2 - sprite.width / 2, Gyarb.HEIGHT / 2 - sprite.height / 2,
         		/*om man g√•r √•t v√§nster s√• ska spelaren renderas flippad i x led*/dir == Direction.LEFT, false);
         
@@ -78,6 +103,8 @@ public class Player extends Entity implements MouseListener{
 	    
 	    toolbar.render(screen);
     }
+    
+    public void render(Screen screen){}
 
     public int getX(){
         return (int)x;
@@ -187,15 +214,9 @@ public class Player extends Entity implements MouseListener{
 	public void keyTyped(KeyEvent e) {
 		if(Character.toLowerCase(e.getKeyChar()) == 'q')showInventory = !showInventory;
 		
-		if(Character.toLowerCase(e.getKeyChar()) == '1')toolbar.setCurrentStack(0);
-		if(Character.toLowerCase(e.getKeyChar()) == '2')toolbar.setCurrentStack(1);
-		if(Character.toLowerCase(e.getKeyChar()) == '3')toolbar.setCurrentStack(2);
-		if(Character.toLowerCase(e.getKeyChar()) == '4')toolbar.setCurrentStack(3);
-		if(Character.toLowerCase(e.getKeyChar()) == '5')toolbar.setCurrentStack(4);
-		if(Character.toLowerCase(e.getKeyChar()) == '6')toolbar.setCurrentStack(5);
-		if(Character.toLowerCase(e.getKeyChar()) == '7')toolbar.setCurrentStack(6);
-		if(Character.toLowerCase(e.getKeyChar()) == '8')toolbar.setCurrentStack(7);
-		if(Character.toLowerCase(e.getKeyChar()) == '9')toolbar.setCurrentStack(8);
+		//lite mindre lmao
+		if(Character.isDigit(e.getKeyChar()) && e.getKeyChar() != '0')
+			toolbar.setCurrentStack(Integer.parseInt("" + e.getKeyChar()) - 1);
 	}
 	
 	public void resetKeys()

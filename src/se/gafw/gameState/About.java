@@ -12,12 +12,6 @@ import se.gafw.util.FileHandler;
 
 public class About extends GameState{
 	
-	/*
-	 * finns ingen poäng med att rendera om inget har ändrats,
-	 * shouldRender blur true när ngt (potentiellt) har ändrats.
-	 */
-	private boolean shouldRender = true;
-	
 	private int offset = 0;
 	private String[] text;
 	private Font font = new Font("Arial", 0, 20);
@@ -32,7 +26,6 @@ public class About extends GameState{
 	}
 
 	public void enter() {
-		shouldRender = true;
 	}
 
 	public void leave() {
@@ -40,7 +33,6 @@ public class About extends GameState{
 	}
 
 	public void render(Screen screen, Graphics2D g2d) {
-		if(!shouldRender)return;
 		
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setColor(Color.BLACK);
@@ -54,7 +46,6 @@ public class About extends GameState{
 		}
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
 		
-		shouldRender = false;
 	}
 
 	public void update() {
@@ -66,7 +57,6 @@ public class About extends GameState{
 	}
 
 	public void keyPressed(KeyEvent e) {
-		shouldRender = true;
 		if((e.getKeyCode() == KeyEvent.VK_W || e.getKeyCode() == KeyEvent.VK_UP)
 			&& offset - 25 >= 0)
 			offset -=25;

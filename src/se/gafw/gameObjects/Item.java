@@ -2,7 +2,6 @@ package se.gafw.gameObjects;
 
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
-import se.gafw.graphics.SpriteSheet;
 
 public class Item {
 	

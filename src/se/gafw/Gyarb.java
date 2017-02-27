@@ -55,7 +55,8 @@ public class Gyarb extends Canvas implements Runnable{
 	}
 
 	/**
-	 * huvodloopen (antar att man kan skriva det?) TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
+	 * huvodloopen (antar att man kan skriva det?)
+	 * TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
 	 * 日本語を分かりますか?
      * 何日迄仕上げか
 	 */

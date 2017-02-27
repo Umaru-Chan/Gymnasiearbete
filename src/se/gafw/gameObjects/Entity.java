@@ -4,7 +4,6 @@ import se.gafw.Gyarb;
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
 import se.gafw.level.Level;
-import se.gafw.level.Tile;
 
 public abstract class Entity {
 
@@ -19,6 +18,11 @@ public abstract class Entity {
 		this.sprite = sprite;
 		width = sprite.width;
 		height =  sprite.height;
+	}
+	
+	private int specialAbs(float val)
+	{
+		return val < 0 ? -1 : val > 0 ? 1 : 0;
 	}
 	
 	protected void move(float dx, float dy){
@@ -55,30 +59,31 @@ public abstract class Entity {
 	 * @param ya
 	 * @return
 	 */
-	private boolean collision(int xa, int ya){
+	protected boolean collision(float xa, float ya){
+		if(x + xa + 32 > (level.getWidth() - 20/*lite marginal*/) * 16 || x + xa < 0)return true;
+		System.out.println(x);
 		boolean solid = false;
 		int rx = (int)x + Gyarb.WIDTH / 2 - sprite.width / 2;
 		int ry = (int)y + Gyarb.HEIGHT / 2 - sprite.height / 2;
+
 		for(int i = 0; i < 4; i++){
 			int xt = ((int)(rx+xa) - i % 2 * 31 + 31) >> 4;
 			int yt = ((int)(ry+ya) + i / 2 * 31) >> 4;
 			if(level.getTile(xt,yt).solid())solid = true;
-			//if(level.getTile(xt,yt).liquid())solid = true;
 		}
 
-		//if(level.getTile(((int)(rx+xa) + 16) >> 4, ((int)(ry+ya) + 32)).solid())solid = true;
-				{
-			int xt = ((int)(rx+xa) - 4 % 2 * 31 + 31) >> 4;
-			int yt = ((int)(ry+ya) + 2 / 2 * 31) >> 4;
-			if(level.getTile(xt,yt).solid())solid = true;
-		}
 		
 		{
-			int xt = ((int)(rx+xa) - 4 % 2 * 31 + 31) >> 4;
-			int yt = ((int)(ry+ya) + 1 / 2 * 31) >> 4;
-			if(level.getTile(xt,yt).solid())solid = true;
+			int xt = ((int)(rx+xa) + 15) >> 4;
+			int yt = ((int)(ry+ya) + 31) >> 4;
+			if(level.getTile(xt,yt).solid())return true;
 		}
-
+		{
+			int xt = ((int)(rx+xa) + 15) >> 4;
+			int yt = ((int)(ry+ya)) >> 4;
+			if(level.getTile(xt,yt).solid())return true;
+		}
+		
 		return solid;
 	}
 	

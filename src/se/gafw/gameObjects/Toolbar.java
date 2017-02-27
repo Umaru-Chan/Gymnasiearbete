@@ -1,5 +1,9 @@
 package se.gafw.gameObjects;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.Graphics2D;
+
 import se.gafw.Gyarb;
 import se.gafw.graphics.Screen;
 import se.gafw.graphics.Sprite;
@@ -56,6 +60,7 @@ public class Toolbar {
 		
 		for(int i = 0; i < 9; i++) {
 			if(stack[i * stackSize] != null) {
+				
 				stack[i * stackSize].render(screen, x + 4 + ((i % 9) * 20), y + 4);
 			}
 		}

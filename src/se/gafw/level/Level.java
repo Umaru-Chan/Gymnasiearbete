@@ -9,16 +9,13 @@ import javax.imageio.ImageIO;
 
 import se.gafw.gameObjects.Entity;
 import se.gafw.graphics.Screen;
-import se.gafw.graphics.Sprite;
-import se.gafw.graphics.SpriteSheet;
 
 public class Level {
 
 	private int width, height;
 	//private Tile[] tiles;
 	private int[] tileColors;
-	private int xOffs, yOffs;
-	private long updates; //för att hålla koll på hur många uppdateringar som har skett
+	
 	private ArrayList<Entity> entities = new ArrayList<>();
 	
 	public Level(String path){
@@ -151,8 +148,6 @@ public class Level {
 	
 	public void render(Screen screen, int xOffs, int yOffs) {
 		screen.setScroll(xOffs, yOffs);
-		this.xOffs = xOffs;
-		this.yOffs = yOffs;
 		int x0 = xOffs >> 4;// >> 4 = / 16
 		int x1 = (xOffs + screen.width + 16) >> 4;
 		int y0 = yOffs >> 4;
@@ -271,5 +266,10 @@ public class Level {
 	
 	public void killEntity(Entity entity) {
 		entities.remove(entity);
+	}
+	
+	public int getWidth()
+	{
+		return width;
 	}
 }

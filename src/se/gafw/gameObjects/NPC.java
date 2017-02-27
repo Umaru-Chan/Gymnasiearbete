@@ -6,9 +6,10 @@ import se.gafw.level.Level;
 
 public class NPC extends Entity {
 
-	private float health;
-	private float speed;
-		public NPC(Level level, float x, float y, Sprite sprite, float health, float speed) {
+	@SuppressWarnings("unused")
+	private float health, speed;
+	
+	public NPC(Level level, float x, float y, Sprite sprite, float health, float speed) {
 		super(level, x, y, sprite);
 		this.health = health;
 		this.speed = speed;
