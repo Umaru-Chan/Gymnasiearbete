@@ -61,7 +61,7 @@ public abstract class Entity {
 	 */
 	protected boolean collision(float xa, float ya){
 		if(x + xa + 32 > (level.getWidth() - 20/*lite marginal*/) * 16 || x + xa < 0)return true;
-		System.out.println(x);
+
 		boolean solid = false;
 		int rx = (int)x + Gyarb.WIDTH / 2 - sprite.width / 2;
 		int ry = (int)y + Gyarb.HEIGHT / 2 - sprite.height / 2;
