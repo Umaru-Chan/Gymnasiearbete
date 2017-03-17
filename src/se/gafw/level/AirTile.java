@@ -3,7 +3,9 @@ package se.gafw.level;
 import se.gafw.graphics.Sprite;
 
 /**
- * Created by Alexander on 11/27/2016.
+ *
+ * Used when creating Tile objects that will return false when calling solid()
+ * 
  */
 public class AirTile extends Tile {
 
