@@ -10,16 +10,31 @@ import se.gafw.Gyarb;
 import se.gafw.graphics.Screen;
 import se.gafw.util.FileHandler;
 
+/**
+ * 
+ * used when the gamestate is in the about menu
+ *
+ */
 public class About extends GameState{
 	
+	//when the user scrolls you have to keep track on where to render
+	//the text
 	private int offset = 0;
+	//contains each row of text
 	private String[] text;
 	private Font font = new Font("Arial", 0, 20);
 	
+	/**
+	 * 
+	 */
 	protected About(){
 		loadText("res/about");
 	}
 	
+	/**
+	 * Loads the text to display from disk into the text array.
+	 * @param path the filepath to the text file
+	 */
 	public void loadText(String path)
 	{
 		text = FileHandler.readText(path).split("\n");
@@ -29,7 +44,6 @@ public class About extends GameState{
 	}
 
 	public void leave() {
-
 	}
 
 	public void render(Screen screen, Graphics2D g2d) {
@@ -49,11 +63,9 @@ public class About extends GameState{
 	}
 
 	public void update() {
-
 	}
 
 	public void keyTyped(KeyEvent e) {
-		
 	}
 
 	public void keyPressed(KeyEvent e) {
@@ -69,6 +81,5 @@ public class About extends GameState{
 	}
 
 	public void keyReleased(KeyEvent e) {
-		
 	}
 }

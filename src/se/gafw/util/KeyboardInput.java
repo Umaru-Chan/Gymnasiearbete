@@ -5,6 +5,11 @@ import java.awt.event.KeyListener;
 
 import se.gafw.gameState.GameStateManager;
 
+/**
+ * 
+ * Used as an abstraction for processing keyboard input
+ *
+ */
 public class KeyboardInput implements KeyListener{
 
 	public void keyTyped(KeyEvent e) {

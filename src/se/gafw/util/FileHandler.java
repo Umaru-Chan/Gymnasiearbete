@@ -17,27 +17,23 @@ import java.util.List;
 
 /**
  * 
- * FileHandler provides a easy way to read files from disk to ram or write from ram to disk.
- * All the write functions returns the current instance of the filehandler so that you can write
- * x = handler.write(y).read(z);
+ * @author alexander
  *
  */
 
 public class FileHandler {
 	
+	/**
+	 * 
+	 */
 	private File file;
 	
 	/**
-	 * NOTE: the file format does not really change anything, all files are written with default text headers, no compression
-	 * is applyed when writing so just use whatever looks good. Althoe it is worth considering that the wrong file-format 
-	 * can fool other applications that your file is something that it is not.
 	 * 
-	 * the parameters will be concatenated like this: path + fileName + "." + fileFormat
-	 * @param path - the desired path to the file
-	 * @param fileName - the file name
-	 * @param fileFormat - the file format 
+	 * @param path
+	 * @param fileName
+	 * @param fileFormat
 	 */
-	
 	public FileHandler(String path, String fileName, String fileFormat){
 		file = new File(path);
 		file.mkdirs();
@@ -48,16 +44,12 @@ public class FileHandler {
 			}catch(IOException e) {System.err.println(":(  "+e.getMessage());}
 		}
 	}
-	
 	/**
 	 * 
-	 * Sets the file to a new path.
-	 * 
-	 * The parameters will be concatenated like this: path + fileName + "." + fileFormat
-	 * @param path - the desired path to the file
-	 * @param fileName - the file name
-	 * @param fileFormat - the file format 
-	 * @return this
+	 * @param path
+	 * @param fileName
+	 * @param fileFormat
+	 * @return
 	 */
 	public FileHandler set(String path, String fileName, String fileFormat){
 		file = new File(path);
@@ -71,25 +63,22 @@ public class FileHandler {
 		return this;
 	}
 	/**
-	 * Writes a file containing (all) the parameter(s) text.
-	 * @param text The text to write
+	 * 
+	 * @param text
 	 */
-	public FileHandler write(String... text){
+	public FileHandler write(String text){
 		try{
-			StringBuilder toWrite = new StringBuilder();
-			for(String s : text)toWrite.append(s + '\n');
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
-			writer.write(toWrite.toString());
+			writer.write(text);
 			writer.close();
 		}catch(IOException e){System.err.println(":(  "+e.getMessage());}
 		return this;
 	}
-	
 	/**
-	 * Does the same as write(String text) but takes an array of Strings representing different lines instead of a single string
-	 * @param lines The text to write
+	 * 
+	 * @param lines
 	 */
-	public FileHandler writeLines(String[] lines){
+	public FileHandler write(String[] lines){
 		try{
 			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 			for(int i = 0; i < lines.length; i++)
@@ -98,11 +87,10 @@ public class FileHandler {
 		}catch(IOException e){System.err.println(":(  "+e.getMessage());}
 		return this;
 	}
-	
 	/**
-	 * Writes a serializable object to disk.
-	 * @param o The object to be written.
-	 * @return this
+	 * 
+	 * @param o
+	 * @return
 	 */
 	public FileHandler writeObject(Object o){
 		try{
@@ -113,22 +101,15 @@ public class FileHandler {
 		return this;
 	}
 	/**
-	 * Writes an array of objects
-	 * 	
-	 * 	fileFolder
-	 * 		subfolder
-	 * 			fileName0.ser
-	 * 			fileName1.ser
-	 * 			fileName2.ser
-	 * 			fileNameN.ser
-	 *  
-	 * @param subfolder if you want the files to be written in a subfolder relative to the original File folder, leave blank if not.
-	 * @param fileNames the names of the multiple files to be written.
-	 * @param toWrite   the objects to write.
-	 * @return this
+	 * 
+	 * @param subfolder
+	 * @param fileNames
+	 * @param toWrite
+	 * @return
 	 */
 	public FileHandler writeObjects(String subfolder, String fileNames, Object[] toWrite){
 		long timer = System.currentTimeMillis();
+		//System.out.println(file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - file.getName().length()));
 		File dir = new File(file.getAbsolutePath().substring(0, file.getAbsolutePath().length() - file.getName().length())+subfolder);
 		if(!dir.exists())dir.mkdirs();
 		try{
@@ -145,10 +126,10 @@ public class FileHandler {
 		return this;
 	}
 	/**
-	 * If the method writeObjects is used to write alot of objects to disk, this method can be used to read those.
-	 * @param subfolder the subfolder containing all the files
-	 * @param fileNames the root name of the files
-	 * @return a list containing all the objects loaded from disk
+	 * 
+	 * @param subfolder
+	 * @param fileNames
+	 * @return
 	 */
 	public List<Object> readObjects(String subfolder, String fileNames){
 		long timer = System.currentTimeMillis();
@@ -166,7 +147,8 @@ public class FileHandler {
 		return result;
 	}
 	/**
-	 * @return the object read from file path last specified
+	 * 
+	 * @return
 	 */
 	public Object readObject(){
 		Object result = null;
@@ -178,10 +160,9 @@ public class FileHandler {
 		return result;
 	}
 	/**
-	 * NOTE: use only when reading text files
-	 * @return the text in the file read from the last specified path
+	 * 
+	 * @return
 	 */
-	@Deprecated
 	public String read(){
 		String result = "";
 		try{
@@ -194,9 +175,9 @@ public class FileHandler {
 	}
 	
 	/**
-	 * reads text from a file on disk to ram
-	 * @param path the filepath to the textfile
-	 * @return the text read from the file
+	 * 
+	 * @param path
+	 * @return
 	 */
 	public static String readText(String path){
 		String result = "";

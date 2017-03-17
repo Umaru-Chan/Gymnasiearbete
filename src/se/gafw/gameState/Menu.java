@@ -13,6 +13,11 @@ import javax.imageio.ImageIO;
 import se.gafw.Gyarb;
 import se.gafw.graphics.Screen;
 
+/**
+ * 
+ * used when the gamestate is in the main menu
+ *
+ */
 public class Menu extends GameState{
 
 	private int selected = 0;
@@ -25,7 +30,11 @@ public class Menu extends GameState{
 		loadBG("res/graphics/menuBG.png");
 	}
 	
-	public void loadBG(String path)
+	/**
+	 * loads the menu background
+	 * @param path the path to the image file
+	 */
+	private void loadBG(String path)
 	{
 		if(bg != null)return;
 		try
@@ -47,7 +56,7 @@ public class Menu extends GameState{
 	}
 	
 	public void render(Screen screen, Graphics2D g2d) {
-
+		//render the background and the buttons
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
 		g2d.setFont(font);
 		g2d.drawImage(bg, 0, 0, Gyarb.WIDTH * Gyarb.SCALE, Gyarb.WIDTH * Gyarb.SCALE, null);
@@ -59,19 +68,16 @@ public class Menu extends GameState{
 			g2d.drawString(buttons[i], (Gyarb.WIDTH * Gyarb.SCALE) / 3 - 250, 450 + i * 75);
 		}	
 		g2d.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_OFF);
-		
-		
 	}
 
-	public void update() {
-		
-	}
+	public void update() {}
 
 	public void keyTyped(KeyEvent e) {}
-	public void keyReleased(KeyEvent e) 
-	{
-	}
+	public void keyReleased(KeyEvent e) {}
 
+	/**
+	 * check for key-events
+	 */
 	public void keyPressed(KeyEvent e)
 	{
 		
@@ -79,7 +85,7 @@ public class Menu extends GameState{
 		if(e.getKeyCode() == KeyEvent.VK_S || e.getKeyCode() == KeyEvent.VK_DOWN)selected ++;
 		if(e.getKeyCode() == KeyEvent.VK_ENTER)
 		{
-			//gör selected saken
+			//check what option is selected
 			if(selected % buttons.length == 0)
 			{
 				//start
@@ -89,6 +95,7 @@ public class Menu extends GameState{
 			if(selected % buttons.length == 1)
 			{
 				//options
+				//TODO implement ^^
 			}
 			
 			if(selected % buttons.length == 2)

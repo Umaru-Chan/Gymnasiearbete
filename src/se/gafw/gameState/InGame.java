@@ -10,14 +10,25 @@ import se.gafw.gameObjects.Player;
 import se.gafw.graphics.Screen;
 import se.gafw.level.Level;
 
+/**
+ * 
+ * This class is used when the gamestate is in-game
+ *
+ */
 public class InGame extends GameState{
 
+	// player object
     private final Player player;
+    // the current level
     private static Level currentLevel;
     
+    // used for rendering
     private final BufferedImage image;
 	private final int[] pixels;
     
+	/**
+	 * @param g an instance of the main class
+	 */
 	protected InGame(Gyarb g) {
 		pixels = ((DataBufferInt) 
 				(image = new BufferedImage(Gyarb.WIDTH, Gyarb.HEIGHT, BufferedImage.TYPE_INT_RGB)).getRaster().getDataBuffer()).getData();
@@ -28,7 +39,6 @@ public class InGame extends GameState{
 	
 	public void enter()
 	{
-		
 	}
 	
 	public void leave()
@@ -52,6 +62,9 @@ public class InGame extends GameState{
 		currentLevel.update();
 	}
 	
+	/** 
+	 * @return the current level
+	 */
 	public static Level getCurrentLevel()
 	{
 		return currentLevel;

@@ -8,11 +8,23 @@ import java.util.List;
 import se.gafw.Gyarb;
 import se.gafw.graphics.Screen;
 
+/**
+ * 
+ * Used to manage the current gamestate, makes sure that only the things that needs
+ * to be rendered and updated is rendered and updated.
+ *
+ */
 public class GameStateManager{
 	
+	// a list containing all instances of the gamestates
 	private static List<GameState> states = new ArrayList<GameState>();
+	// to keep track of wich state the game is in at any time
 	private static State currentState = null;
 	
+	/**
+	 * The ordinal number of each enum attribute is 
+	 * used to differentiate between the different states in the state list.
+	 */
 	public enum State
 	{
 		MENU,
@@ -22,11 +34,11 @@ public class GameStateManager{
 		PAUSE
 	}
 	
+	// the class is meant to be used statically
 	private GameStateManager(){}
 	
 	/**
-	 * skapar och lägger till alla gamestates. om något state behöver mer
-	 * gjort så görs det här (t.ex. ladda bakgrundsbilden till menyn)
+	 * Creates instances of all gamestates and adds them to the list
 	 * @param g
 	 */
 	public static void init(Gyarb g)
@@ -41,12 +53,13 @@ public class GameStateManager{
 
 		states.add(State.PAUSE.ordinal(), new Pause());
 		
+		//the default state should always be the menu state (for when you first start the game)
 		setCurrentState(State.MENU);
 	}
 	
 	/*
 	 *	---------------------------------------------------------------------------------------------------------------- 
-	 *  buffermetoder
+	 *  buffer methods
 	 */
 	public static void render(Screen screen, Graphics2D g2d)
 	{
@@ -77,11 +90,18 @@ public class GameStateManager{
 	 *	----------------------------------------------------------------------------------------------------------------
 	 */
 	
+	/**
+	 * sets the current state to the newState
+	 * @param newState the gamestate to jump into
+	 */
 	public static void setCurrentState(State newState)
 	{
+		// no need to do anything if you already are in the desired state
 		if(currentState == newState)return;
+		// alert the currentstate that you are leaving
 		if(currentState != null)states.get(currentState.ordinal()).leave();
-		currentState = newState;
+		currentState = newState; //set the new state
+		// alert the new state that you are entering
 		states.get(currentState.ordinal()).enter();
 	}
 }
