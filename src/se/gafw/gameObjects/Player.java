@@ -24,6 +24,8 @@ import se.gafw.level.Tile;
  * 
  * The player can remove and place blocks. When a blocked is removed the player
  * gets it as an item in the inventory that can be used later.
+ *
+ * BUG: the player can place tiles on himself
  */
 public class Player extends Entity implements MouseListener{
 
