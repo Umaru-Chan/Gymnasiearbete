@@ -10,36 +10,51 @@ import se.gafw.graphics.Screen;
 import se.gafw.graphics.Window;
 import se.gafw.util.KeyboardInput;
 
-
+/**
+ * 
+ * The main class that contains some key objects and the main game loop.
+ *
+ */
 public class Gyarb extends Canvas implements Runnable{
 	public static final long serialVersionUID = 1L;
 	
+	/**
+	 * some static final variables that are supposed to be accessable from alover the project.
+	 */
 	public static final int WIDTH = 450, HEIGHT = WIDTH / 16 * 9, SCALE = 3;
 	public static final short VERSION_MAJOR = 0, VERSION_MINOR = 5;
 	public static final String TITLE = "gyarb " + VERSION_MAJOR + "." + VERSION_MINOR;
-
-	private boolean running;
-	private Thread thread;
+		
+	private boolean running; // if false, join the threads and close the application
+	private Thread thread;	 // run the project on a new thread
 	
-	private final Window window;
-	private final Screen screen;
+	private final Window window; // the application window
+	private final Screen screen; // the screen object used to render everyting to a of-screen buffer
+	
 	/**
-	 * 
+	 * default constructor
 	 */
 	public Gyarb() {
 		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
 		screen = new Screen(WIDTH, HEIGHT, 0x8888ff);
+		
 		addKeyListener(new KeyboardInput());
 		GameStateManager.init(this);
 		start();		
 	}
 	
+	/**
+	 * Starts the main-game thread and sets running to true
+	 */
 	public synchronized void start(){
 		thread = new Thread(this, "mainThread");
 		running = true;
 		thread.start();
 	}
 	
+	/**
+	 * Joins the main-game thread and sets running to false
+	 */
 	public synchronized void stop(){
 		try{
 			thread.join();
@@ -50,9 +65,13 @@ public class Gyarb extends Canvas implements Runnable{
 	}
 
 	/**
-	 * huvodloopen (antar att man kan skriva det?) TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
-	 * 日本語を分かりますか?
-     * 何日迄仕上げか
+	 * 
+	 * The run method is called from the new thread when it is started, the method contains 
+	 * the main game loop. This loop makes sure to call update() 60 times per second and 
+	 * render as many times per second that the system allows for. This loop prioritates updates
+	 * because entities are moved in the update method, if the system does not call the method at a set ammount
+	 * of times per second entities may move slower or faster on different systems.
+	 * 
 	 */
 	public void run() {
 		int frames = 0, updates = 0;
@@ -62,7 +81,7 @@ public class Gyarb extends Canvas implements Runnable{
 		
 		this.requestFocus();
 		super.createBufferStrategy(3);
-
+		
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -77,9 +96,10 @@ public class Gyarb extends Canvas implements Runnable{
 			frames++;
 			
 			try{
-				Thread.sleep(5); //TODO fixa 60fps inte 100 (får ca 400 på macen om man inte sleepar)
+				Thread.sleep(5); // Free up cpu time for other processes and make sure not to use too many system resources
 			}catch(InterruptedException e){}
 			
+			//once every second
 			if (System.currentTimeMillis() - timer >= 1e3) {
 				window.setTitle(TITLE + " fps: " + frames + " ups: " + updates);
 				
@@ -91,12 +111,11 @@ public class Gyarb extends Canvas implements Runnable{
 	}
 		
 	/**
-	 * rendera allt här, render metoden kommer att kallas så många gånger per sekund som datorn kan
+	 * Renders everything in the game
 	 */
 	private void render() {
-		if(window.shouldClose())//TODO fixa en crash
+		if(window.shouldClose())//TODO
             return;
-		
 		BufferStrategy buffer = getBufferStrategy();
 		Graphics g = buffer.getDrawGraphics();
 		
@@ -107,14 +126,14 @@ public class Gyarb extends Canvas implements Runnable{
 	}
 	
 	/**
-	 * uppdatera all rörelse och logik i spelet (update kommer alltid att kallas 60ggr per sekund oberoende av system)
+	 * Updates everything in the game, such as movement and physics
 	 */
 	private void update() {
 		GameStateManager.update();
 	}
 
 	public static void main(String[] args) {
-		//TODO läsa config?? kanske rendera upp ngn loga medans spelet laddas??
+		//TODO read config file
 		new Gyarb();
 	}
 }
