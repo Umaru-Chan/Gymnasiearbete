@@ -10,10 +10,6 @@ import se.gafw.graphics.Screen;
 import se.gafw.graphics.Window;
 import se.gafw.util.KeyboardInput;
 
-/**
- * Måste fixa kollitionen!!
- */
-
 
 public class Gyarb extends Canvas implements Runnable{
 	public static final long serialVersionUID = 1L;
@@ -33,7 +29,6 @@ public class Gyarb extends Canvas implements Runnable{
 	public Gyarb() {
 		window = new Window(TITLE, WIDTH * SCALE, HEIGHT * SCALE, this, true);
 		screen = new Screen(WIDTH, HEIGHT, 0x8888ff);
-		
 		addKeyListener(new KeyboardInput());
 		GameStateManager.init(this);
 		start();		
@@ -55,8 +50,7 @@ public class Gyarb extends Canvas implements Runnable{
 	}
 
 	/**
-	 * huvodloopen (antar att man kan skriva det?)
-	 * TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
+	 * huvodloopen (antar att man kan skriva det?) TODO skriva bättre kommentarer och komma överens om vilket språk vi ska skriva dom i...
 	 * 日本語を分かりますか?
      * 何日迄仕上げか
 	 */
@@ -68,7 +62,7 @@ public class Gyarb extends Canvas implements Runnable{
 		
 		this.requestFocus();
 		super.createBufferStrategy(3);
-		
+
 		while (running) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
@@ -102,6 +96,7 @@ public class Gyarb extends Canvas implements Runnable{
 	private void render() {
 		if(window.shouldClose())//TODO fixa en crash
             return;
+		
 		BufferStrategy buffer = getBufferStrategy();
 		Graphics g = buffer.getDrawGraphics();
 		
